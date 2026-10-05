@@ -5,63 +5,48 @@
 <title>Miniature déréférencement</title>
 <style>
 @font-face { font-family: 'Inter'; src: url('assets/inter-latin.woff2') format('woff2'); font-weight: 100 900; }
-:root { --jaune: #F49C16; --jaune-clair: #FFB94A; --bleu: #31249F; --bleu-fonce: #1F1672; --bleu-clair: #5B4DD1; --rouge: #E5484D; --rouge-pale: #FDECEC; --gris-clair: #D9D6E3; --gris: #6E6B7E; }
+:root { --jaune: #F49C16; --jaune-clair: #FFB94A; --bleu: #31249F; --bleu-fonce: #1F1672; --bleu-clair: #5B4DD1; --rouge: #E5484D; --rouge-pale: #FDECEC; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 1280px; height: 720px; overflow: hidden; }
 body { font-family: 'Inter', sans-serif; position: relative;
-  background: radial-gradient(circle at 78% 50%, var(--bleu-clair) 0, var(--bleu) 45%, var(--bleu-fonce) 100%); }
+  background: radial-gradient(circle at 30% 55%, var(--bleu-clair) 0, var(--bleu) 40%, var(--bleu-fonce) 100%); }
 .abs { position: absolute; }
-#t1 { left: 60px; top: 150px; font-size: 168px; font-weight: 900; letter-spacing: -0.05em; line-height: .9; color: var(--jaune); }
-#t2 { left: 64px; top: 320px; font-size: 92px; font-weight: 900; letter-spacing: -0.04em; line-height: 1; color: #fff; }
-#t3 { left: 66px; top: 440px; font-size: 40px; font-weight: 700; color: #CFC9F4; }
-.br { position: absolute; width: 70px; height: 70px; border: 0 solid var(--jaune); }
-#card { left: 700px; top: 170px; width: 520px; height: 380px; transform: rotate(-4deg); }
-#bar { left: 0; top: 0; width: 520px; height: 76px; border-radius: 38px; background: #fff; display: flex; align-items: center; gap: 16px; padding: 0 26px; font-size: 32px; font-weight: 700; color: #15131F; box-shadow: 0 14px 40px rgba(0,0,0,.25); }
-#res { left: 0; top: 110px; width: 520px; height: 230px; }
-#logo { left: 40px; bottom: 26px; width: 300px; clip-path: inset(20% 13% 20% 13%); margin-left: -40px; margin-bottom: -60px; }
-#logoBox { position: absolute; left: 54px; bottom: 40px; width: 240px; height: 116px; border-radius: 18px; background: #fff; overflow: hidden; }
-#logoBox img { position: absolute; width: 300px; left: -30px; top: -25px; }
+/* titre : un seul mot */
+#word { left: 40px; top: 18px; font-size: 200px; font-weight: 900; letter-spacing: -0.06em; line-height: 1; color: var(--jaune);
+  transform: rotate(-3deg); text-shadow: 0 10px 0 var(--bleu-fonce), 0 18px 40px rgba(0,0,0,.45); }
+/* le résultat Google qu'on efface */
+#card { left: 50px; top: 250px; width: 640px; transform: rotate(-3deg); }
+#bar { width: 640px; height: 92px; border-radius: 46px; background: #fff; display: flex; align-items: center; gap: 18px; padding: 0 32px;
+  font-size: 44px; font-weight: 800; color: #15131F; box-shadow: 0 16px 40px rgba(0,0,0,.35); }
+#res { position: relative; margin-top: 22px; width: 640px; height: 250px; border-radius: 26px; background: var(--rouge-pale); border: 7px solid var(--rouge);
+  box-shadow: 0 16px 40px rgba(0,0,0,.35); overflow: hidden; padding: 34px 38px; }
+.l { height: 30px; border-radius: 15px; background: #F5C6C7; }
+/* gros X rouge */
+#x { left: 200px; top: 310px; width: 360px; height: 360px; transform: rotate(-3deg); }
+/* Patrick */
+#face { right: -90px; bottom: -340px; height: 1060px; filter: drop-shadow(0 0 0 #fff) drop-shadow(8px 0 0 #fff) drop-shadow(-8px 0 0 #fff) drop-shadow(0 -8px 0 #fff) drop-shadow(0 24px 50px rgba(0,0,0,.5)); }
+#glow { right: 40px; top: 60px; width: 640px; height: 640px; border-radius: 50%; background: radial-gradient(circle, rgba(244,156,22,.55) 0, rgba(244,156,22,0) 70%); }
+.br { position: absolute; width: 80px; height: 80px; border: 0 solid var(--jaune); }
 </style>
 </head>
 <body>
-  <div class="br" style="left:40px; top:40px; border-width:18px 0 0 18px"></div>
-  <div class="abs" id="t1">EFFACÉ</div>
-  <div class="abs" id="t2">de Google</div>
-  <div class="abs" id="t3">la méthode en 3 étapes</div>
+  <div class="abs" id="glow"></div>
+  <img class="abs" id="face" src="assets/patrick-nobg.png">
+  <div class="br" style="right:30px; top:30px; border-width:22px 22px 0 0"></div>
 
+  <div class="abs" id="word">EFFACÉ</div>
   <div class="abs" id="card">
-    <div class="abs" id="bar">
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#31249F" stroke-width="2.8" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l5.5 5.5"/></svg>
-      Prénom Nom
+    <div id="bar">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#31249F" stroke-width="3" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l5.5 5.5"/></svg>
+      Votre nom
     </div>
-    <div class="abs" id="res"></div>
+    <div id="res">
+      <div class="l" style="width:220px; height:20px; background:#E9B3B5"></div>
+      <div class="l" style="width:500px; height:44px; background:var(--rouge); margin-top:22px"></div>
+      <div class="l" style="width:540px; margin-top:24px"></div>
+      <div class="l" style="width:420px; margin-top:16px"></div>
+    </div>
   </div>
-
-  <div id="logoBox"><img src="assets/logo410.svg"></div>
-
-<script>
-// Résultat négatif qui se désintègre en pixels vers la droite.
-const res = document.getElementById('res');
-const W = 520, H = 230, S = 20, cols = W / S, rows = Math.ceil(H / S);
-// carte de base, coupée à droite
-res.innerHTML = `<div style="position:absolute;left:0;top:0;width:${W}px;height:${H}px;border-radius:22px;background:var(--rouge-pale);border:5px solid var(--rouge);
-  clip-path: inset(0 46% 0 0 round 22px); box-shadow:0 14px 40px rgba(0,0,0,.25)">
-  <div style="padding:26px 30px">
-    <div style="font-size:22px;color:var(--gris);font-weight:600;white-space:nowrap">vieux-journal.fr › 2014</div>
-    <div style="font-size:40px;color:var(--rouge);font-weight:900;line-height:1.08;margin-top:8px;white-space:nowrap">Prénom Nom :<br>l'affaire de 2014…</div>
-    <div style="height:16px;width:420px;border-radius:8px;background:#F5C6C7;margin-top:18px"></div>
-  </div></div>`;
-// pixels qui s'envolent
-let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-for (let c = Math.floor(cols * 0.54); c < cols; c++) for (let r = 0; r < rows; r++) {
-  const p = (c - cols * 0.54) / (cols * 0.46);           // 0 → 1 vers la droite
-  if (rnd() < p * 0.85) continue;                        // de plus en plus de trous
-  const edge = r === 0 || r === rows - 1;
-  const col = edge ? '#E5484D' : (rnd() < 0.3 ? '#F5C6C7' : '#FDECEC');
-  const dx = p * p * 90 * rnd(), dy = (rnd() - 0.5) * p * 70;
-  const sz = S * (1 - p * 0.55);
-  res.insertAdjacentHTML('beforeend', `<i style="position:absolute;left:${c * S + dx}px;top:${r * S + dy}px;width:${sz}px;height:${sz}px;border-radius:3px;background:${col};opacity:${1 - p * 0.6}"></i>`);
-}
-</script>
+  <svg class="abs" id="x" viewBox="0 0 100 100"><path d="M14 14L86 86M86 14L14 86" stroke="#fff" stroke-width="26" stroke-linecap="round"/><path d="M14 14L86 86M86 14L14 86" stroke="#E5484D" stroke-width="17" stroke-linecap="round"/></svg>
 </body>
 </html>
