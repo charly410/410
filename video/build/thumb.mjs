@@ -1,0 +1,10 @@
+import { chromium } from 'playwright-core';
+import path from 'node:path';
+const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--allow-file-access-from-files'] });
+const p = await b.newPage({ viewport: { width: 1280, height: 720 } });
+await p.goto('file://' + root + '/thumbnail.html');
+await p.evaluate(() => document.fonts.ready);
+await p.waitForTimeout(300);
+await p.screenshot({ path: root + '/miniature-dereferencement-410.png' });
+await b.close();
