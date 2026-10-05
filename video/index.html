@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Déréférencement Google</title>
+<style>
+@font-face { font-family: 'Inter'; src: url('assets/inter-latin.woff2') format('woff2'); font-weight: 100 900; }
+:root {
+  --jaune: #F49C16; --jaune-clair: #FFB94A; --jaune-pale: #FFF4E0;
+  --bleu: #31249F; --bleu-clair: #5B4DD1; --bleu-fonce: #1F1672; --bleu-pale: #EEEBFF;
+  --noir: #15131F; --gris-fonce: #3A3748; --gris: #6E6B7E; --gris-clair: #D9D6E3; --gris-pale: #F5F4F9; --blanc: #FFFFFF;
+  --rouge: #E5484D; --rouge-pale: #FDECEC;
+  --ombre-2: 0 8px 30px rgba(31, 22, 114, 0.12);
+  --ombre-3: 0 20px 60px rgba(31, 22, 114, 0.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--gris-pale); }
+body { font-family: 'Inter', sans-serif; color: var(--noir); -webkit-font-smoothing: antialiased; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: radial-gradient(circle at 1px 1px, rgba(49,36,159,.10) 1.5px, transparent 0) 0 0/40px 40px, var(--gris-pale); }
+.abs { position: absolute; }
+.scene { position: absolute; inset: 0; opacity: 0; }
+.card { position: absolute; background: var(--blanc); border-radius: 28px; box-shadow: var(--ombre-3); }
+.chip { position: absolute; left: 120px; top: 92px; padding: 14px 28px; border-radius: 999px; background: var(--bleu); color: #fff; font-weight: 700; font-size: 30px; letter-spacing: .01em; }
+.chip b { color: var(--jaune-clair); font-weight: 800; }
+.h1 { position: absolute; font-weight: 900; font-size: 76px; letter-spacing: -0.03em; line-height: 1.05; color: var(--bleu-fonce); }
+.h2 { font-weight: 800; font-size: 46px; letter-spacing: -0.02em; color: var(--bleu-fonce); }
+.lbl { font-weight: 700; font-size: 32px; color: var(--gris-fonce); }
+.pill { position: absolute; padding: 14px 30px; border-radius: 999px; font-weight: 800; font-size: 32px; white-space: nowrap; }
+.pill.j { background: var(--jaune); color: #fff; }
+.pill.b { background: var(--bleu); color: #fff; }
+.pill.r { background: var(--rouge); color: #fff; }
+.pill.w { background: #fff; color: var(--bleu-fonce); box-shadow: var(--ombre-2); }
+.line { height: 16px; border-radius: 8px; background: var(--gris-clair); }
+.ico { position: absolute; display: grid; place-items: center; border-radius: 50%; }
+.ok { background: var(--bleu); } .ko { background: var(--rouge); }
+.mono { font-family: 'DejaVu Sans Mono', monospace; }
+/* corner brackets (motif du logo) */
+.br { position: absolute; width: 90px; height: 90px; border-color: var(--jaune); border-style: solid; }
+.br.tr { border-width: 22px 22px 0 0; } .br.bl { border-width: 0 0 22px 22px; }
+/* persistent */
+#bug { position: absolute; right: 70px; top: 62px; width: 190px; opacity: 0; }
+#progress { position: absolute; left: 120px; right: 120px; bottom: 54px; height: 8px; border-radius: 4px; background: var(--gris-clair); opacity: 0; }
+#progress .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 4px; background: var(--jaune); }
+#progress .tick { position: absolute; top: -6px; width: 4px; height: 20px; border-radius: 2px; background: var(--bleu); }
+#progress .tl { position: absolute; top: 22px; transform: translateX(-2px); font-size: 20px; font-weight: 700; color: var(--gris); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ================= HOOK ================= -->
+<div class="scene" id="hook">
+  <div class="card" id="serp" style="left:360px; top:120px; width:1200px; height:840px;">
+    <div class="abs" id="searchbar" style="left:60px; top:50px; width:1080px; height:96px; border-radius:48px; border:3px solid var(--gris-clair); background:#fff;">
+      <svg class="abs" style="left:34px; top:26px" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--bleu)" stroke-width="2.6" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l5.5 5.5"/></svg>
+      <div class="abs" style="left:100px; top:22px; height:52px; overflow:hidden; white-space:nowrap;" id="typed"><span style="font-size:40px; font-weight:600; color:var(--noir)">Prénom Nom</span></div>
+      <div class="abs" id="caret" style="left:104px; top:24px; width:3px; height:48px; background:var(--bleu)"></div>
+    </div>
+    <div id="results">
+      <div class="abs res" style="left:60px; top:200px; width:1080px; height:130px;"><div class="line" style="width:260px; height:12px"></div><div class="line" style="width:620px; height:24px; margin-top:16px; background:#CFC9F4"></div><div class="line" style="width:900px; margin-top:16px"></div></div>
+      <div class="abs res" style="left:60px; top:350px; width:1080px; height:130px;"><div class="line" style="width:220px; height:12px"></div><div class="line" style="width:540px; height:24px; margin-top:16px; background:#CFC9F4"></div><div class="line" style="width:820px; margin-top:16px"></div></div>
+      <div class="abs res" id="badres" style="left:36px; top:490px; width:1128px; height:150px; border-radius:20px; padding:20px 24px; background:var(--rouge-pale); border:3px solid var(--rouge);">
+        <div style="font-size:22px; color:var(--gris); font-weight:600">vieux-journal-local.fr › archives › 2014</div>
+        <div style="font-size:34px; color:var(--rouge); font-weight:800; margin-top:6px">Prénom Nom : ce qu'il s'est passé en 2014…</div>
+        <div class="line" style="width:780px; margin-top:16px; background:#F5C6C7"></div>
+      </div>
+      <div class="abs res" id="res4" style="left:60px; top:670px; width:1080px; height:130px;"><div class="line" style="width:240px; height:12px"></div><div class="line" style="width:580px; height:24px; margin-top:16px; background:#CFC9F4"></div><div class="line" style="width:860px; margin-top:16px"></div></div>
+    </div>
+  </div>
+  <div class="pill j" id="tagOld" style="left:1290px; top:520px;">Vieil article</div>
+  <div class="pill j" id="tagInfo" style="left:1320px; top:610px;">Info dépassée</div>
+  <div class="pill b" id="tagGood" style="left:0; right:0; margin:0 auto; width:max-content; top:988px;">✓ Bonne nouvelle : ça s'efface</div>
+</div>
+
+<!-- ================= TITLE CARD ================= -->
+<div class="scene" id="title" style="background:var(--bleu);">
+  <div class="br tr" style="right:250px; top:200px;"></div>
+  <div class="br bl" style="left:250px; bottom:200px;"></div>
+  <div class="abs" style="left:0; right:0; top:390px; text-align:center;">
+    <div id="tt1" style="font-size:120px; font-weight:900; letter-spacing:-0.04em; color:#fff;">Déréférencement</div>
+    <div id="tt2" style="font-size:64px; font-weight:800; color:var(--jaune-clair); margin-top:10px;">Google · mode d'emploi</div>
+  </div>
+</div>
+
+<!-- ================= S1 : DÉRÉFÉRENCER ≠ SUPPRIMER ================= -->
+<div class="scene" id="s1">
+  <div class="h1" id="s1h" style="left:0; right:0; top:110px; text-align:center;">Une distinction essentielle</div>
+  <div class="card" id="cDeref" style="left:150px; top:250px; width:780px; height:640px; overflow:hidden;">
+    <div style="height:110px; background:var(--bleu); color:#fff; font-size:50px; font-weight:900; display:grid; place-items:center; letter-spacing:-0.01em;">DÉRÉFÉRENCER</div>
+    <!-- mini SERP -->
+    <div class="abs" style="left:50px; top:150px; width:330px; height:300px; border-radius:20px; border:3px solid var(--gris-clair); padding:22px;">
+      <div style="font-size:20px; font-weight:800; color:var(--gris)">Résultats Google</div>
+      <div class="line" style="width:240px; margin-top:22px; background:#CFC9F4"></div>
+      <div class="line" id="dLink" style="width:270px; margin-top:22px; height:24px; background:var(--jaune)"></div>
+      <div class="line" style="width:210px; margin-top:22px; background:#CFC9F4"></div>
+      <div class="line" style="width:250px; margin-top:22px; background:#CFC9F4"></div>
+    </div>
+    <!-- page web -->
+    <div class="abs" id="dPage" style="left:430px; top:150px; width:300px; height:300px; border-radius:20px; background:var(--gris-pale); border:3px solid var(--gris-clair); padding:22px;">
+      <div style="display:flex; gap:8px"><i style="width:14px;height:14px;border-radius:50%;background:var(--rouge)"></i><i style="width:14px;height:14px;border-radius:50%;background:var(--jaune)"></i><i style="width:14px;height:14px;border-radius:50%;background:var(--bleu-clair)"></i></div>
+      <div class="line" style="width:200px; margin-top:26px; height:22px; background:var(--gris-fonce)"></div>
+      <div class="line" style="width:250px; margin-top:20px"></div><div class="line" style="width:230px; margin-top:14px"></div><div class="line" style="width:180px; margin-top:14px"></div>
+    </div>
+    <div class="abs lbl" id="dL1" style="left:50px; top:490px; font-size:30px;"><span style="color:var(--bleu)">✓</span> La page reste en ligne</div>
+    <div class="abs lbl" id="dL2" style="left:50px; top:550px; font-size:30px;"><span style="color:var(--rouge)">✗</span> Introuvable en cherchant</div>
+  </div>
+  <div class="card" id="cSuppr" style="left:990px; top:250px; width:780px; height:640px; overflow:hidden;">
+    <div style="height:110px; background:var(--jaune); color:#fff; font-size:50px; font-weight:900; display:grid; place-items:center;">SUPPRIMER</div>
+    <div class="abs" id="sPage" style="left:240px; top:150px; width:300px; height:300px;"></div>
+    <div class="abs lbl" id="sL1" style="left:50px; top:490px; font-size:30px;"><span style="color:var(--rouge)">✗</span> Contenu effacé à la source</div>
+    <div class="abs lbl" id="sL2" style="left:50px; top:550px; font-size:30px;"><span style="color:var(--rouge)">✗</span> Directement sur la page web</div>
+  </div>
+  <div class="pill w" id="who1" style="left:330px; top:925px;">On s'adresse à : <span style="color:var(--bleu)">Google</span></div>
+  <div class="pill w" id="who2" style="left:1150px; top:925px;">On s'adresse à : <span style="color:var(--jaune)">le site</span></div>
+  <div class="abs" id="neq" style="left:900px; top:500px; width:120px; height:120px; border-radius:50%; background:var(--bleu-fonce); color:#fff; font-size:72px; font-weight:900; display:grid; place-items:center; box-shadow:var(--ombre-3)">≠</div>
+</div>
+
+<!-- ================= S2 : QUI CONTRÔLE ================= -->
+<div class="scene" id="s2">
+  <div class="h1" id="s2h" style="left:0; right:0; top:180px; text-align:center;">Qui contrôle le contenu&nbsp;?</div>
+  <svg class="abs" style="left:0; top:0" width="1920" height="1080"><path id="fork" d="M960 330 V450 M960 450 C960 520 560 470 560 560 M960 450 C960 520 1360 470 1360 560" fill="none" stroke="var(--bleu-clair)" stroke-width="8" stroke-linecap="round" stroke-dasharray="1400" stroke-dashoffset="1400"/></svg>
+  <div class="card" id="bMine" style="left:310px; top:570px; width:500px; height:300px; text-align:center;">
+    <svg style="margin-top:40px" width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="var(--bleu)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L20 3M16 7l3 3M18 5l2 2"/></svg>
+    <div class="h2" style="margin-top:20px">Votre site</div>
+  </div>
+  <div class="card" id="bOther" style="left:1110px; top:570px; width:500px; height:300px; text-align:center;">
+    <svg style="margin-top:40px" width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="var(--jaune)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c3 3.2 3 15.8 0 19M12 2.5c-3 3.2-3 15.8 0 19"/></svg>
+    <div class="h2" style="margin-top:20px">Un site tiers</div>
+  </div>
+</div>
+
+<!-- ================= S3 : VOTRE SITE ================= -->
+<div class="scene" id="s3">
+  <div class="chip" id="s3chip">Cas 1 · <b>Votre site</b></div>
+  <div class="h1" id="s3h" style="left:120px; top:190px; font-size:64px;">Vous avez la main.</div>
+  <!-- stepper -->
+  <div id="steps" class="abs" style="left:120px; top:330px; width:560px;">
+    <div class="step" id="st1" style="display:flex; align-items:center; gap:24px; height:150px;"><div class="num" style="width:76px;height:76px;border-radius:50%;background:var(--gris-clair);color:#fff;font-size:38px;font-weight:900;display:grid;place-items:center;flex:none">1</div><div class="h2" style="font-size:40px">Supprimer<br>la page</div></div>
+    <div class="step" id="st2" style="display:flex; align-items:center; gap:24px; height:150px;"><div class="num" style="width:76px;height:76px;border-radius:50%;background:var(--gris-clair);color:#fff;font-size:38px;font-weight:900;display:grid;place-items:center;flex:none">2</div><div class="h2" style="font-size:40px">Balise<br>noindex</div></div>
+    <div class="step" id="st3" style="display:flex; align-items:center; gap:24px; height:150px;"><div class="num" style="width:76px;height:76px;border-radius:50%;background:var(--gris-clair);color:#fff;font-size:38px;font-weight:900;display:grid;place-items:center;flex:none">3</div><div class="h2" style="font-size:40px">Outil de<br>suppression</div></div>
+  </div>
+  <!-- panel A : 404 / 410 -->
+  <div class="card" id="pA" style="left:760px; top:250px; width:1040px; height:660px; overflow:hidden;">
+    <div style="height:70px; background:var(--gris-pale); border-bottom:3px solid var(--gris-clair); display:flex; align-items:center; padding:0 28px; gap:10px">
+      <i style="width:18px;height:18px;border-radius:50%;background:var(--rouge)"></i><i style="width:18px;height:18px;border-radius:50%;background:var(--jaune)"></i><i style="width:18px;height:18px;border-radius:50%;background:var(--bleu-clair)"></i>
+      <div class="mono" style="margin-left:24px; padding:6px 22px; border-radius:999px; background:#fff; font-size:22px; color:var(--gris)">votre-site.fr/ancienne-page</div>
+    </div>
+    <div class="abs" id="aPage" style="left:80px; top:130px; width:880px;">
+      <div class="line" style="width:540px; height:40px; background:var(--gris-fonce)"></div>
+      <div class="line" style="width:820px; margin-top:34px"></div><div class="line" style="width:760px; margin-top:20px"></div><div class="line" style="width:800px; margin-top:20px"></div><div class="line" style="width:500px; margin-top:20px"></div>
+      <div style="width:880px; height:150px; border-radius:16px; background:var(--bleu-pale); margin-top:34px"></div>
+    </div>
+    <div class="abs" id="a404" style="left:0; right:0; top:150px; text-align:center; font-size:230px; font-weight:900; color:var(--gris-clair); letter-spacing:-0.04em">404</div>
+    <div class="abs" id="a410" style="left:0; right:0; top:130px; text-align:center;">
+      <div style="font-size:250px; font-weight:900; color:var(--bleu); letter-spacing:-0.04em; line-height:1">410</div>
+      <div style="font-size:60px; font-weight:900; color:var(--jaune); letter-spacing:.3em; margin-top:-6px">GONE</div>
+    </div>
+    <div class="abs" id="aBubble" style="left:150px; top:470px; width:740px; padding:26px 36px; border-radius:24px; background:var(--bleu-fonce); color:#fff; font-size:38px; font-weight:700; text-align:center">« Ce contenu a disparu. <span id="aDef" style="color:var(--jaune-clair); display:inline-block">Définitivement.</span> »</div>
+  </div>
+  <!-- panel B : noindex -->
+  <div class="card" id="pB" style="left:760px; top:250px; width:1040px; height:660px; background:var(--noir); overflow:hidden;">
+    <div class="abs" style="left:60px; top:60px; display:flex; gap:22px">
+      <div class="pill b" id="bOnline" style="position:relative">✓ En ligne</div>
+      <div class="pill r" id="bOff" style="position:relative">✗ Hors de Google</div>
+    </div>
+    <div class="abs mono" style="left:60px; top:210px; font-size:34px; line-height:1.9; color:#B9B5CC">
+      <div>&lt;head&gt;</div>
+      <div style="padding-left:50px">&lt;title&gt;Ma page&lt;/title&gt;</div>
+      <div style="padding-left:50px; position:relative; height:64px;">
+        <div id="metaHi" class="abs" style="left:34px; top:2px; width:860px; height:60px; border-radius:10px; background:rgba(244,156,22,.18); border:2px solid var(--jaune)"></div>
+        <div id="metaTxt" class="abs" style="left:50px; top:0; white-space:nowrap; overflow:hidden; color:#fff">&lt;meta name="robots" content="<span style="color:var(--jaune-clair); font-weight:700">noindex</span>"&gt;</div>
+      </div>
+      <div>&lt;/head&gt;</div>
+    </div>
+  </div>
+  <!-- panel C : search console -->
+  <div class="card" id="pC" style="left:760px; top:250px; width:1040px; height:660px; overflow:hidden;">
+    <div style="height:90px; background:var(--bleu-pale); display:flex; align-items:center; padding:0 40px; font-size:32px; font-weight:800; color:var(--bleu-fonce)">Search Console <span style="color:var(--gris); font-weight:600; margin-left:16px">› Suppressions</span></div>
+    <div class="abs" id="cBtn" style="left:60px; top:140px; padding:20px 40px; border-radius:14px; background:var(--bleu); color:#fff; font-size:32px; font-weight:800;">+ Nouvelle demande</div>
+    <div class="abs mono" id="cUrl" style="left:60px; top:260px; width:920px; padding:20px 28px; border-radius:14px; border:3px solid var(--gris-clair); font-size:28px; color:var(--gris-fonce)">https://votre-site.fr/ancienne-page</div>
+    <div class="abs" id="cRes" style="left:60px; top:380px; width:920px; height:200px; border-radius:20px; padding:26px 30px; background:var(--rouge-pale); border:3px solid var(--rouge); overflow:hidden">
+      <div style="font-size:22px; color:var(--gris); font-weight:600">votre-site.fr › ancienne-page</div>
+      <div style="font-size:34px; color:var(--rouge); font-weight:800; margin-top:6px">Le résultat que vous voulez retirer</div>
+      <div class="line" style="width:700px; margin-top:18px; background:#F5C6C7"></div>
+      <div class="abs" id="cMask" style="inset:0; background:repeating-linear-gradient(-45deg, var(--bleu) 0 26px, var(--bleu-fonce) 26px 52px); display:grid; place-items:center; color:#fff; font-size:44px; font-weight:900">MASQUÉ</div>
+    </div>
+    <div class="abs" id="cTmp" style="left:60px; top:600px; font-size:26px; font-weight:700; color:var(--gris)">⏱ Masquage temporaire, le temps que Google prenne en compte vos modifications</div>
+    <svg class="abs" id="cursor" style="left:600px; top:400px" width="54" height="54" viewBox="0 0 24 24"><path d="M4 2l15 9-7 1.5L9 20z" fill="var(--noir)" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<!-- ================= S4a : SITE TIERS, CONTACT ================= -->
+<div class="scene" id="s4">
+  <div class="chip" id="s4chip">Cas 2 · <b>Un site tiers</b></div>
+  <div class="h1" id="s4h" style="left:120px; top:190px; font-size:64px;">Commencez par le plus simple.</div>
+  <div class="card" id="site3" style="left:1140px; top:330px; width:640px; height:520px; overflow:hidden">
+    <div style="height:64px; background:var(--gris-pale); border-bottom:3px solid var(--gris-clair); display:flex; align-items:center; padding:0 24px; gap:10px"><i style="width:16px;height:16px;border-radius:50%;background:var(--rouge)"></i><i style="width:16px;height:16px;border-radius:50%;background:var(--jaune)"></i><i style="width:16px;height:16px;border-radius:50%;background:var(--bleu-clair)"></i></div>
+    <div style="padding:40px"><div class="line" style="width:380px; height:34px; background:var(--gris-fonce)"></div><div class="line" style="width:540px; margin-top:28px"></div><div class="line" style="width:500px; margin-top:18px"></div><div class="line" style="width:520px; margin-top:18px"></div><div style="width:560px; height:150px; border-radius:16px; background:var(--jaune-pale); margin-top:30px"></div></div>
+    <div class="abs" style="right:28px; bottom:28px; padding:10px 22px; border-radius:999px; background:var(--bleu-pale); color:var(--bleu); font-weight:800; font-size:24px">Responsable du site</div>
+  </div>
+  <svg class="abs" id="mail" style="left:200px; top:420px" width="300" height="220" viewBox="0 0 30 22"><rect x="1" y="1" width="28" height="20" rx="3" fill="#fff" stroke="var(--bleu)" stroke-width="1.6"/><path d="M2 3l13 9 13-9" fill="none" stroke="var(--bleu)" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  <div class="pill w" id="ask1" style="left:160px; top:440px;">✉ Supprimer le contenu</div>
+  <div class="pill w" id="ask2" style="left:160px; top:550px;">✉ Anonymiser</div>
+  <div class="pill j" id="ask3" style="left:160px; top:660px;">… ou ajouter un noindex</div>
+</div>
+
+<!-- ================= S4b : DROIT À L'OUBLI ================= -->
+<div class="scene" id="s4b">
+  <div class="chip" id="s4bchip">Cas 2 · <b>Un site tiers</b></div>
+  <div class="pill r" id="noRep" style="left:760px; top:470px; font-size:48px; padding:22px 48px">Pas de réponse&nbsp;?</div>
+  <div id="rightBlock">
+    <div class="abs" id="shield" style="left:160px; top:270px; width:520px; text-align:center">
+      <svg width="300" height="340" viewBox="0 0 30 34"><path d="M15 1l13 5v10c0 9-6 14.5-13 17C8 30.5 2 25 2 16V6z" fill="var(--bleu)"/><path d="M9 17l4.5 4.5L22 12" fill="none" stroke="var(--jaune-clair)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="h2" style="margin-top:20px; font-size:54px">Droit à l'oubli</div>
+      <div class="pill j" id="rgpd" style="position:relative; display:inline-block; margin-top:20px">Renforcé par le RGPD</div>
+    </div>
+    <div class="pill b" id="nameP" style="left:840px; top:470px; font-size:40px">Prénom Nom</div>
+    <svg class="abs" style="left:0; top:0" width="1920" height="1080"><path id="assoc" d="M1145 505 H1370" stroke="var(--bleu-clair)" stroke-width="8" stroke-dasharray="20 14" fill="none"/></svg>
+    <div class="card" id="pageX" style="left:1380px; top:380px; width:380px; height:260px; padding:30px">
+      <div class="line" style="width:250px; height:26px; background:var(--gris-fonce)"></div><div class="line" style="width:310px; margin-top:24px"></div><div class="line" style="width:280px; margin-top:16px"></div><div class="line" style="width:300px; margin-top:16px"></div>
+    </div>
+    <div class="abs" id="cut" style="left:1218px; top:462px; width:84px; height:84px; border-radius:50%; background:var(--rouge); color:#fff; font-size:52px; font-weight:900; display:grid; place-items:center">✂</div>
+  </div>
+  <div id="formBlock">
+    <div class="card" id="form" style="left:160px; top:230px; width:900px; height:700px; padding:50px 60px">
+      <div class="h2" style="font-size:44px">Formulaire Google</div>
+      <div class="lbl" style="font-size:28px; color:var(--gris); margin-top:6px">Demande de suppression · Droit à l'oubli</div>
+      <div class="fld" id="f1" style="margin-top:50px; height:120px; border-radius:18px; border:3px solid var(--gris-clair); display:flex; align-items:center; padding:0 30px; gap:24px; font-size:34px; font-weight:700"><span class="fc" style="width:56px;height:56px;border-radius:50%;background:var(--gris-clair);display:grid;place-items:center;color:#fff;font-size:34px">✓</span>Pièce d'identité</div>
+      <div class="fld" id="f2" style="margin-top:24px; height:170px; border-radius:18px; border:3px solid var(--gris-clair); display:flex; align-items:center; padding:0 30px; gap:24px; font-size:34px; font-weight:700"><span class="fc" style="width:56px;height:56px;border-radius:50%;background:var(--gris-clair);display:grid;place-items:center;color:#fff;font-size:34px;flex:none">✓</span><div>Liste <span style="color:var(--jaune)">exacte</span> des URLs<div class="mono" style="font-size:20px; font-weight:400; color:var(--gris); line-height:1.5; margin-top:6px">https://site-a.fr/article-2014<br>https://site-b.com/profil/prenom-nom</div></div></div>
+      <div class="fld" id="f3" style="margin-top:24px; height:120px; border-radius:18px; border:3px solid var(--gris-clair); display:flex; align-items:center; padding:0 30px; gap:24px; font-size:34px; font-weight:700"><span class="fc" style="width:56px;height:56px;border-radius:50%;background:var(--gris-clair);display:grid;place-items:center;color:#fff;font-size:34px">✓</span>Justification solide</div>
+    </div>
+    <div class="abs lbl" id="critT" style="left:1180px; top:250px; font-size:34px; color:var(--bleu-fonce); font-weight:800">Google accepte si l'info est…</div>
+    <div class="pill j crit" id="k1" style="left:1180px; top:340px; font-size:42px">inexacte</div>
+    <div class="pill j crit" id="k2" style="left:1180px; top:480px; font-size:42px">périmée</div>
+    <div class="pill j crit" id="k3" style="left:1180px; top:620px; font-size:42px">non pertinente</div>
+    <div class="pill j crit" id="k4" style="left:1180px; top:760px; font-size:42px">excessive</div>
+  </div>
+</div>
+
+<!-- ================= S4c : PIÈGE ================= -->
+<div class="scene" id="s4c">
+  <div class="abs" id="warnBand" style="left:0; right:0; top:110px; height:140px; background:var(--jaune); display:flex; align-items:center; justify-content:center; gap:30px; color:#fff; font-size:70px; font-weight:900; letter-spacing:-0.02em">
+    <svg width="90" height="90" viewBox="0 0 24 24"><path d="M12 2.5L23 21.5H1z" fill="#fff"/><path d="M12 9v6M12 17.6v.4" stroke="var(--jaune)" stroke-width="2.6" stroke-linecap="round"/></svg>Piège classique
+  </div>
+  <div class="pill w" id="toolName" style="left:0; right:0; margin:0 auto; width:max-content; top:300px; font-size:40px">Outil « Contenu obsolète »</div>
+  <div class="card" id="caseA" style="left:180px; top:430px; width:740px; height:470px; padding:50px; text-align:center">
+    <div class="h2" style="font-size:40px">Page <span style="color:var(--bleu)">toujours en ligne</span></div>
+    <div class="lbl" style="font-size:28px; color:var(--gris); margin-top:10px">vous voulez la faire déréférencer</div>
+    <div id="xA" style="margin:50px auto 0; width:190px; height:190px; border-radius:50%; background:var(--rouge); color:#fff; font-size:120px; font-weight:900; display:grid; place-items:center">✗</div>
+  </div>
+  <div class="card" id="caseB" style="left:1000px; top:430px; width:740px; height:470px; padding:50px; text-align:center">
+    <div class="h2" style="font-size:40px">Page <span style="color:var(--jaune)">déjà modifiée</span> ou supprimée</div>
+    <div class="lbl" id="oldV" style="font-size:28px; color:var(--gris); margin-top:10px">… mais l'ancienne version traîne dans Google</div>
+    <div id="vB" style="margin:50px auto 0; width:190px; height:190px; border-radius:50%; background:var(--bleu); color:#fff; font-size:120px; font-weight:900; display:grid; place-items:center">✓</div>
+  </div>
+</div>
+
+<!-- ================= S5 : REFUS → CNIL ================= -->
+<div class="scene" id="s5">
+  <div class="h1" id="s5h" style="left:0; right:0; top:120px; text-align:center;">Et si Google dit non&nbsp;?</div>
+  <div class="card" id="reqCard" style="left:200px; top:300px; width:620px; height:560px; padding:50px">
+    <div class="h2" style="font-size:40px">Votre demande</div>
+    <div class="line" style="width:480px; margin-top:40px"></div><div class="line" style="width:420px; margin-top:20px"></div><div class="line" style="width:460px; margin-top:20px"></div><div class="line" style="width:300px; margin-top:20px"></div>
+    <div class="abs" id="stampKo" style="left:90px; top:280px; padding:18px 40px; border:10px solid var(--rouge); border-radius:20px; color:var(--rouge); font-size:76px; font-weight:900; letter-spacing:.05em; transform:rotate(-12deg)">REFUSÉ</div>
+    <div class="abs" id="stampOk" style="left:40px; top:280px; padding:18px 30px; border:10px solid var(--bleu); border-radius:20px; color:var(--bleu); font-size:64px; font-weight:900; letter-spacing:.02em; transform:rotate(-12deg); background:rgba(255,255,255,.9)">DÉRÉFÉRENCÉ</div>
+  </div>
+  <div class="pill j" id="notOver" style="left:846px; top:540px; font-size:34px">Ce n'est pas fini →</div>
+  <div class="card" id="cnil" style="left:1260px; top:300px; width:480px; height:560px; text-align:center; padding-top:60px">
+    <svg width="230" height="200" viewBox="0 0 24 21"><path d="M12 1L23 6.5H1z" fill="var(--bleu)"/><rect x="3" y="8" width="2.6" height="9" rx=".6" fill="var(--bleu)"/><rect x="8.1" y="8" width="2.6" height="9" rx=".6" fill="var(--bleu)"/><rect x="13.3" y="8" width="2.6" height="9" rx=".6" fill="var(--bleu)"/><rect x="18.4" y="8" width="2.6" height="9" rx=".6" fill="var(--bleu)"/><rect x="1" y="18" width="22" height="2.6" rx=".6" fill="var(--bleu-fonce)"/></svg>
+    <div style="font-size:90px; font-weight:900; color:var(--bleu-fonce); letter-spacing:.04em; margin-top:10px">CNIL</div>
+    <div class="lbl" id="cnilL" style="font-size:28px; margin-top:12px; color:var(--gris)">Plainte légitime&nbsp;?<br><b style="color:var(--bleu)">Déréférencement imposé</b></div>
+  </div>
+</div>
+
+<!-- ================= S6 : RÉCAP + CTA ================= -->
+<div class="scene" id="s6">
+  <div class="h1" id="s6h" style="left:0; right:0; top:120px; text-align:center;">En résumé</div>
+  <div class="card rc" id="r1" style="left:150px; top:290px; width:500px; height:560px; padding:50px 44px; text-align:center">
+    <div style="width:130px;height:130px;margin:0 auto;border-radius:50%;background:var(--bleu-pale);display:grid;place-items:center"><svg width="74" height="74" viewBox="0 0 24 24" fill="none" stroke="var(--bleu)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L20 3M16 7l3 3M18 5l2 2"/></svg></div>
+    <div class="h2" style="margin-top:30px; font-size:42px">Votre site</div>
+    <div class="lbl" style="font-size:30px; margin-top:22px; line-height:1.45">Vous agissez directement<br><span style="color:var(--gris); font-size:26px">410 · noindex · Search Console</span></div>
+  </div>
+  <div class="card rc" id="r2" style="left:710px; top:290px; width:500px; height:560px; padding:50px 44px; text-align:center">
+    <div style="width:130px;height:130px;margin:0 auto;border-radius:50%;background:var(--jaune-pale);display:grid;place-items:center"><svg width="80" height="60" viewBox="0 0 30 22"><rect x="1" y="1" width="28" height="20" rx="3" fill="none" stroke="var(--jaune)" stroke-width="2"/><path d="M2 3l13 9 13-9" fill="none" stroke="var(--jaune)" stroke-width="2" stroke-linejoin="round"/></svg></div>
+    <div class="h2" style="margin-top:30px; font-size:42px">Un site tiers</div>
+    <div class="lbl" style="font-size:30px; margin-top:22px; line-height:1.45">Vous contactez,<br>puis droit à l'oubli<br><span style="color:var(--gris); font-size:26px">Formulaire Google</span></div>
+  </div>
+  <div class="card rc" id="r3" style="left:1270px; top:290px; width:500px; height:560px; padding:50px 44px; text-align:center">
+    <div style="width:130px;height:130px;margin:0 auto;border-radius:50%;background:var(--rouge-pale);display:grid;place-items:center;font-size:70px;font-weight:900;color:var(--rouge)">✗</div>
+    <div class="h2" style="margin-top:30px; font-size:42px">Un refus</div>
+    <div class="lbl" style="font-size:30px; margin-top:22px; line-height:1.45">Vous saisissez<br>la CNIL</div>
+  </div>
+  <div class="card" id="cta" style="left:410px; top:330px; width:1100px; height:420px; padding:60px 70px">
+    <div class="pill j" style="position:relative; display:inline-block; font-size:26px">Article complet</div>
+    <div style="font-size:56px; font-weight:900; color:var(--bleu-fonce); letter-spacing:-0.02em; margin-top:26px; line-height:1.1">Déréférencement Google&nbsp;: comment faire disparaître un résultat&nbsp;?</div>
+    <div class="lbl" style="font-size:30px; margin-top:24px; color:var(--gris)">✓ Modèles d'e-mails &nbsp;&nbsp; ✓ Checklist complète</div>
+  </div>
+  <div class="abs" id="ctaArrow" style="left:930px; top:800px; width:60px; text-align:center; font-size:80px; font-weight:900; color:var(--jaune)">↓</div>
+  <div class="abs" id="ctaUrl" style="left:0; right:0; top:900px; text-align:center; font-size:34px; font-weight:800; color:var(--bleu)">Lien en description</div>
+</div>
+
+<!-- ================= OUTRO ================= -->
+<div class="scene" id="outro" style="background:#fff;">
+  <img id="logoBig" src="assets/logo410.svg" class="abs" style="left:360px; top:140px; width:1200px;">
+</div>
+
+<!-- persistent -->
+<img id="bug" src="assets/logo410.svg" style="clip-path: inset(20% 13% 20% 13%); width:300px; right:30px; top:20px;">
+<div id="progress"><div class="fill"></div></div>
+</div>
+
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script src="build/cues.js"></script>
+<script>
+const C = CUES, END = C._end + 2.6;
+const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out', duration: 0.6 } });
+const $ = s => document.querySelector(s);
+const pop = (sel, t, extra = {}) => tl.fromTo(sel, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, ease: 'back.out(1.8)', duration: 0.55, ...extra }, t);
+const rise = (sel, t, extra = {}) => tl.fromTo(sel, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.7, ...extra }, t);
+const fade = (sel, t, d = 0.4) => tl.to(sel, { opacity: 0, duration: d, ease: 'power2.in' }, t);
+const scene = (sel, a, b) => { tl.set(sel, { opacity: 1 }, a); tl.set(sel, { opacity: 0 }, b); };
+// initial hidden states
+gsap.set('.scene > *', { opacity: 1 });
+
+/* ---------- persistent progress + bug ---------- */
+const chapters = [['Hook', 0], ['Définition', C.s1_intro], ['Votre site', C.s3_intro], ['Site tiers', C.s4_intro], ['Refus', C.s5_no], ['Récap', C.s6_recap]];
+const P = $('#progress');
+chapters.slice(1).forEach(([n, t]) => {
+  const x = (t / C._end) * 100;
+  P.insertAdjacentHTML('beforeend', `<div class="tick" style="left:${x}%"></div><div class="tl" style="left:${x}%">${n}</div>`);
+});
+tl.fromTo('#progress', { opacity: 0 }, { opacity: 1, duration: 0.5 }, C.s1_intro + 0.6);
+tl.fromTo('#progress .fill', { width: '0%' }, { width: '100%', ease: 'none', duration: C._end }, 0);
+tl.to('#progress', { opacity: 0, duration: 0.4 }, C.s6_cta - 0.3);
+tl.fromTo('#bug', { opacity: 0 }, { opacity: 1, duration: 0.5 }, C.s1_intro + 0.6);
+tl.to('#bug', { opacity: 0, duration: 0.3 }, C._end + 0.1);
+tl.to('#bug', { opacity: 0, duration: 0.3 }, C.s4c_warn - 0.3);
+tl.to('#bug', { opacity: 1, duration: 0.3 }, C.s5_no);
+
+/* ---------- HOOK ---------- */
+scene('#hook', 0, C.hook_how + 0.6);
+rise('#serp', 0, { duration: 0.8 });
+tl.fromTo('#typed', { width: 0 }, { width: 262, ease: 'steps(10)', duration: 1.3 }, C.hook_search + 0.2);
+tl.fromTo('#caret', { x: 0 }, { x: 258, ease: 'steps(10)', duration: 1.3 }, C.hook_search + 0.2);
+tl.to('#caret', { opacity: 0, duration: 0.01, repeat: 7, yoyo: true, repeatDelay: 0.25, ease: 'none' }, C.hook_search + 1.6);
+gsap.set('.res', { opacity: 0 });
+tl.fromTo('.res', { opacity: 0, y: 30 }, { opacity: 1, y: 0, stagger: 0.12, duration: 0.5 }, C.hook_etla);
+tl.fromTo('#badres', { scale: 1 }, { scale: 1.04, yoyo: true, repeat: 3, duration: 0.25, ease: 'sine.inOut' }, C.hook_result);
+pop('#tagOld', C.hook_old);
+pop('#tagInfo', C.hook_info);
+tl.to('#badres', { filter: 'blur(9px)', opacity: 0.55, duration: 1.4, ease: 'power1.inOut' }, C.hook_oublier - 0.3);
+tl.to(['#tagOld', '#tagInfo'], { opacity: 0, x: 40, duration: 0.4 }, C.hook_good - 0.1);
+tl.to('#badres', { x: 1300, opacity: 0, duration: 0.7, ease: 'power3.in' }, C.hook_good);
+tl.to('#res4', { y: -180, duration: 0.6 }, C.hook_good + 0.6);
+pop('#tagGood', C.hook_good + 0.8);
+
+/* ---------- TITLE ---------- */
+scene('#title', C.hook_how - 0.1, C.s1_intro + 1.1);
+tl.fromTo('#title', { clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(80% at 50% 50%)', duration: 0.8, ease: 'power3.inOut' }, C.hook_how - 0.1);
+rise('#tt1', C.hook_how + 0.3);
+rise('#tt2', C.hook_how + 0.5);
+tl.fromTo('#title .br.tr', { x: 120, y: -120, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.7 }, C.hook_how + 0.4);
+tl.fromTo('#title .br.bl', { x: -120, y: 120, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.7 }, C.hook_how + 0.4);
+tl.to('#title', { clipPath: 'circle(0% at 50% 50%)', duration: 0.7, ease: 'power3.inOut' }, C.s1_intro + 0.4);
+
+/* ---------- S1 ---------- */
+scene('#s1', C.s1_intro + 0.4, C.s2_q);
+rise('#s1h', C.s1_intro + 0.6);
+rise('#cDeref', C.s1_deref - 0.2);
+rise('#cSuppr', C.s1_deref);
+gsap.set(['#dL1', '#dL2', '#sL1', '#sL2', '#who1', '#who2', '#neq'], { opacity: 0 });
+// build pixel page for "supprimer"
+(() => { const sp = $('#sPage'); let h = ''; const n = 10, s = 30;
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+    let col = '#F5F4F9'; if (r === 0 || r === n - 1 || c === 0 || c === n - 1) col = '#D9D6E3';
+    if (r === 2 && c > 1 && c < 7) col = '#3A3748'; if ((r === 4 || r === 5 || r === 6) && c > 1 && c < 9) col = '#D9D6E3';
+    h += `<i class="px" style="position:absolute;left:${c * s}px;top:${r * s}px;width:${s}px;height:${s}px;background:${col}"></i>`; }
+  sp.innerHTML = h; })();
+tl.to('#dLink', { x: 260, y: -60, rotation: 18, opacity: 0, duration: 0.9, ease: 'power2.in' }, C.s1_deref + 1.6);
+tl.fromTo('#dPage', { boxShadow: '0 0 0 0 rgba(49,36,159,0)' }, { boxShadow: '0 0 0 10px rgba(49,36,159,.25)', duration: 0.4, yoyo: true, repeat: 1 }, C.s1_stays);
+rise('#dL1', C.s1_stays + 0.3);
+rise('#dL2', C.s1_nobody + 0.2);
+tl.to('#sPage .px', { y: () => 120 + Math.random() * 200, x: () => (Math.random() - 0.5) * 160, rotation: () => (Math.random() - 0.5) * 180, opacity: 0, scale: 0.3, duration: 1.1, ease: 'power2.in', stagger: { each: 0.008, from: 'random' } }, C.s1_suppr + 0.9);
+rise('#sL1', C.s1_suppr + 1.2);
+rise('#sL2', C.s1_source);
+pop('#neq', C.s1_diff + 0.1);
+rise('#who1', C.s1_people);
+rise('#who2', C.s1_people + 0.35);
+fade('#s1 > *', C.s2_q - 0.4, 0.35);
+
+/* ---------- S2 ---------- */
+scene('#s2', C.s2_q - 0.05, C.s3_intro);
+rise('#s2h', C.s2_q);
+tl.to('#fork', { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, C.s2_q + 0.6);
+rise('#bMine', C.s2_q + 1.1);
+rise('#bOther', C.s2_q + 1.3);
+tl.to('#bMine', { scale: 1.1, boxShadow: '0 0 0 12px rgba(49,36,159,.35), 0 20px 60px rgba(31,22,114,.18)', duration: 0.4 }, C.s2_mine + 0.9);
+tl.to('#bMine', { scale: 1, boxShadow: '0 20px 60px rgba(31,22,114,.18)', duration: 0.4 }, C.s2_other - 0.2);
+tl.to('#bOther', { scale: 1.1, boxShadow: '0 0 0 12px rgba(244,156,22,.45), 0 20px 60px rgba(31,22,114,.18)', duration: 0.4 }, C.s2_other);
+fade('#s2 > *', C.s3_intro - 0.35, 0.3);
+
+/* ---------- S3 ---------- */
+scene('#s3', C.s3_intro - 0.05, C.s4_intro);
+tl.fromTo('#s3chip', { opacity: 0, x: -80 }, { opacity: 1, x: 0 }, C.s3_intro);
+rise('#s3h', C.s3_intro + 1.4);
+tl.fromTo('.step', { opacity: 0, x: -60 }, { opacity: 0.35, x: 0, stagger: 0.12 }, C.s3_intro + 0.3);
+const activate = (n, t) => {
+  tl.to(`#st${n}`, { opacity: 1, duration: 0.3 }, t);
+  tl.to(`#st${n} .num`, { backgroundColor: '#31249F', scale: 1.12, duration: 0.35, ease: 'back.out(2)' }, t);
+  if (n > 1) { tl.to(`#st${n - 1}`, { opacity: 0.55, duration: 0.3 }, t); tl.to(`#st${n - 1} .num`, { backgroundColor: '#F49C16', scale: 1, duration: 0.3 }, t); }
+};
+gsap.set(['#pA', '#pB', '#pC', '#a404', '#a410', '#aBubble'], { opacity: 0 });
+activate(1, C.s3_delete);
+rise('#pA', C.s3_delete);
+tl.to('#aPage', { opacity: 0, scale: 0.9, duration: 0.4 }, C.s3_404);
+pop('#a404', C.s3_404 + 0.2);
+tl.to('#a404', { opacity: 0, y: -40, duration: 0.3 }, C.s3_410 + 0.3);
+pop('#a410', C.s3_410 + 0.45, { ease: 'back.out(2.4)' });
+tl.to('#a410', { y: -60, scale: 0.85, duration: 0.5 }, C.s3_gone - 0.4);
+rise('#aBubble', C.s3_gone - 0.3);
+tl.fromTo('#aDef', { scale: 1 }, { scale: 1.25, yoyo: true, repeat: 1, duration: 0.25 }, C.s3_gone + 1.9);
+tl.to('#pA', { opacity: 0, y: -40, duration: 0.4 }, C.s3_keep - 0.3);
+activate(2, C.s3_keep);
+rise('#pB', C.s3_keep);
+gsap.set(['#bOnline', '#bOff', '#metaHi'], { opacity: 0 });
+pop('#bOnline', C.s3_keep + 1.2);
+pop('#bOff', C.s3_keep + 1.9);
+tl.fromTo('#metaTxt', { width: 0 }, { width: 850, ease: 'steps(34)', duration: 1.4 }, C.s3_noindex + 0.4);
+tl.fromTo('#metaHi', { opacity: 0 }, { opacity: 1, duration: 0.3 }, C.s3_noindex + 1.8);
+tl.to('#pB', { opacity: 0, y: -40, duration: 0.4 }, C.s3_speed - 0.2);
+activate(3, C.s3_speed);
+rise('#pC', C.s3_speed + 0.1);
+gsap.set(['#cUrl', '#cRes', '#cMask', '#cTmp'], { opacity: 0 });
+tl.fromTo('#cursor', { x: 300, y: 250, opacity: 0 }, { x: -260, y: -230, opacity: 1, duration: 1.0, ease: 'power2.inOut' }, C.s3_gsc);
+tl.to('#cBtn', { scale: 0.92, yoyo: true, repeat: 1, duration: 0.12 }, C.s3_gsc + 1.0);
+rise('#cUrl', C.s3_gsc + 1.3);
+rise('#cRes', C.s3_mask - 0.3);
+tl.fromTo('#cMask', { opacity: 1, clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'power2.inOut' }, C.s3_mask + 0.6);
+tl.to('#cursor', { opacity: 0, duration: 0.3 }, C.s3_mask);
+rise('#cTmp', C.s3_mask + 1.6);
+fade('#s3 > *', C.s4_intro - 0.35, 0.3);
+
+/* ---------- S4a ---------- */
+scene('#s4', C.s4_intro - 0.05, C.s4b_noreply);
+tl.fromTo('#s4chip', { opacity: 0, x: -80 }, { opacity: 1, x: 0 }, C.s4_intro);
+rise('#s4h', C.s4_intro + 0.3);
+rise('#site3', C.s4_intro + 0.8);
+gsap.set(['#mail', '#ask1', '#ask2', '#ask3'], { opacity: 0 });
+pop('#mail', C.s4_mail);
+tl.to('#mail', { x: 860, y: -40, scale: 0.35, rotation: 8, duration: 1.0, ease: 'power2.in' }, C.s4_mail + 0.8);
+tl.to('#mail', { opacity: 0, duration: 0.15 }, C.s4_mail + 1.75);
+tl.to('#site3', { scale: 1.04, yoyo: true, repeat: 1, duration: 0.15 }, C.s4_mail + 1.8);
+rise('#ask1', C.s4_ask + 0.1);
+rise('#ask2', C.s4_ask + 1.5);
+rise('#ask3', C.s4_ask2 + 0.2);
+fade('#s4 > *:not(#s4chip)', C.s4b_noreply - 0.3, 0.3);
+
+/* ---------- S4b ---------- */
+scene('#s4b', C.s4b_noreply - 0.05, C.s4c_warn);
+gsap.set(['#noRep', '#shield', '#rgpd', '#nameP', '#pageX', '#cut', '#form', '#critT', '.crit'], { opacity: 0 });
+pop('#noRep', C.s4b_noreply - 0.05);
+tl.to('#noRep', { opacity: 0, y: -40, duration: 0.3 }, C.s4b_right + 0.2);
+pop('#shield', C.s4b_right + 0.5);
+pop('#rgpd', C.s4b_right + 3.0);
+gsap.set('#assoc', { strokeDashoffset: 0, opacity: 0 });
+rise('#nameP', C.s4b_allows);
+tl.to('#assoc', { opacity: 1, duration: 0.3 }, C.s4b_allows + 0.4);
+rise('#pageX', C.s4b_allows + 0.4);
+pop('#cut', C.s4b_allows + 2.9);
+tl.to('#assoc', { opacity: 0.15, duration: 0.3 }, C.s4b_allows + 3.2);
+tl.to('#pageX', { opacity: 0.35, x: 60, duration: 0.6 }, C.s4b_allows + 3.2);
+tl.to('#rightBlock > *', { opacity: 0, duration: 0.35 }, C.s4b_form - 0.4);
+rise('#form', C.s4b_form);
+const check = (n, t) => {
+  tl.to(`#f${n}`, { borderColor: '#31249F', backgroundColor: '#EEEBFF', duration: 0.3 }, t);
+  tl.fromTo(`#f${n} .fc`, { scale: 0.5 }, { scale: 1, backgroundColor: '#31249F', ease: 'back.out(3)', duration: 0.45 }, t);
+};
+check(1, C.s4b_id + 0.2); check(2, C.s4b_urls + 0.4); check(3, C.s4b_just + 0.2);
+rise('#critT', C.s4b_crit + 0.2);
+pop('#k1', C.s4b_crit + 1.5); pop('#k2', C.s4b_c2 + 0.05); pop('#k3', C.s4b_c3 + 0.15); pop('#k4', C.s4b_c4 + 0.1);
+fade('#s4b > *', C.s4c_warn - 0.3, 0.3);
+tl.to('#s4b #formBlock > *', { opacity: 0, duration: 0.3 }, C.s4c_warn - 0.3);
+
+/* ---------- S4c ---------- */
+scene('#s4c', C.s4c_warn - 0.05, C.s5_no);
+tl.fromTo('#warnBand', { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power3.inOut' }, C.s4c_warn);
+tl.fromTo('#warnBand', { x: -8 }, { x: 8, duration: 0.06, repeat: 5, yoyo: true, ease: 'none' }, C.s4c_warn + 0.5);
+rise('#toolName', C.s4c_tool + 0.3);
+gsap.set(['#caseA', '#caseB', '#xA', '#vB', '#oldV'], { opacity: 0 });
+rise('#caseA', C.s4c_tool + 1.2);
+pop('#xA', C.s4c_tool + 3.6, { ease: 'back.out(3)' });
+rise('#caseB', C.s4c_only + 0.2);
+rise('#oldV', C.s4c_old + 0.2);
+pop('#vB', C.s4c_old + 1.5, { ease: 'back.out(3)' });
+fade('#s4c > *', C.s5_no - 0.3, 0.3);
+
+/* ---------- S5 ---------- */
+scene('#s5', C.s5_no - 0.05, C.s6_recap);
+rise('#s5h', C.s5_no - 0.05);
+gsap.set(['#reqCard', '#stampKo', '#stampOk', '#notOver', '#cnil', '#cnilL'], { opacity: 0 });
+rise('#reqCard', C.s5_no + 0.1);
+tl.fromTo('#stampKo', { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power4.in' }, C.s5_no + 0.6);
+tl.fromTo('#reqCard', { x: 0 }, { x: 10, duration: 0.05, repeat: 3, yoyo: true }, C.s5_no + 0.9);
+rise('#notOver', C.s5_notover);
+rise('#cnil', C.s5_cnil);
+rise('#cnilL', C.s5_force + 0.6);
+tl.to('#stampKo', { opacity: 0, scale: 0.6, duration: 0.3 }, C.s5_force + 2.6);
+tl.fromTo('#stampOk', { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'power4.in' }, C.s5_force + 2.9);
+fade('#s5 > *', C.s6_recap - 0.3, 0.3);
+
+/* ---------- S6 ---------- */
+scene('#s6', C.s6_recap - 0.05, C._end + 0.6);
+rise('#s6h', C.s6_recap);
+gsap.set(['.rc', '#cta', '#ctaArrow', '#ctaUrl'], { opacity: 0 });
+rise('#r1', C.s6_mine);
+rise('#r2', C.s6_third);
+rise('#r3', C.s6_refus);
+tl.to('#r3 > div:first-child', { scale: 1.15, yoyo: true, repeat: 1, duration: 0.2 }, C.s6_cnil);
+tl.to(['.rc', '#s6h'], { opacity: 0, y: -60, stagger: 0.06, duration: 0.4, ease: 'power2.in' }, C.s6_cta - 0.2);
+rise('#cta', C.s6_cta + 0.3);
+rise('#ctaUrl', C.s6_cta + 4.2);
+tl.fromTo('#ctaArrow', { opacity: 0, y: -20 }, { opacity: 1, y: 20, duration: 0.45, repeat: 3, yoyo: true, ease: 'sine.inOut' }, C.s6_cta + 4.0);
+
+/* ---------- OUTRO ---------- */
+scene('#outro', C._end + 0.2, END + 1);
+tl.fromTo('#outro', { opacity: 0 }, { opacity: 1, duration: 0.4 }, C._end + 0.2);
+tl.fromTo('#logoBig', { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'back.out(1.6)' }, C._end + 0.4);
+tl.to({}, { duration: 0.01 }, END);
+
+window.DURATION = END;
+window.seek = t => { tl.seek(t, false); };
+window.ready = document.fonts.ready.then(() => true);
+if (!/render/.test(location.search)) { tl.play(); }
+</script>
+</body>
+</html>
