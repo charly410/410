@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Habillage 410 Gone</title>
+<!--
+  Habillage réutilisable des vidéos 410 Gone, rendu image par image par render.mjs.
+  ?mode=open&titre=...&sous=...  ouverture de 2,6 s, à placer juste après le hook.
+  ?mode=fin                      écran de fin de 15 s, compatible écran de fin YouTube.
+  &guides                        affiche les zones à respecter pour les éléments YouTube.
+-->
+<style>
+@font-face { font-family: 'Montserrat'; src: url('assets/montserrat-variable.woff') format('woff'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('assets/inter-variable.woff') format('woff'); font-weight: 100 900; }
+:root {
+  --indigo: #31249F; --indigo-profond: #201A64; --orange: #FFB400;
+  --ghost: #F7F5FA; --cool: #929CBF; --indigo-sombre: #9A8FF0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--indigo-profond); }
+body { font-family: 'Inter', sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: radial-gradient(circle at 1px 1px, rgba(154,143,240,.16) 1.5px, transparent 0) 0 0/40px 40px, var(--indigo-profond); }
+.abs { position: absolute; }
+.mode { position: absolute; inset: 0; display: none; }
+.titre { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+/* braquets, motif du logo */
+.br { position: absolute; width: 70px; height: 70px; border-color: var(--orange); border-style: solid; }
+.br.tl { border-width: 12px 0 0 12px; } .br.tr { border-width: 12px 12px 0 0; }
+.br.bl { border-width: 0 0 12px 12px; } .br.brr { border-width: 0 12px 12px 0; }
+
+/* ---------- ouverture ---------- */
+#open { background: var(--indigo); }
+#oLogo { left: 510px; top: 130px; width: 900px; }
+#oRule { left: 860px; top: 600px; width: 200px; height: 8px; border-radius: 4px; background: var(--orange); }
+#oTitre { left: 160px; right: 160px; top: 650px; text-align: center; font-size: 78px; }
+#oSous { left: 160px; right: 160px; top: 760px; text-align: center; font-size: 38px; font-weight: 600; color: var(--orange); }
+
+/* ---------- écran de fin ---------- */
+/* Zones des éléments YouTube (cadre 1920 x 1080) :
+   abonnement : cercle de 360 px centré en (520, 560) ;
+   vidéo : rectangle 16:9 de 880 x 495 à (900, 312).                  */
+#fLogo { left: 735px; top: -20px; width: 450px; }
+#ring { left: 320px; top: 360px; width: 400px; height: 400px; border-radius: 50%; border: 6px solid var(--orange); }
+#ringHalo { left: 300px; top: 340px; width: 440px; height: 440px; border-radius: 50%; border: 2px solid rgba(255,180,0,.35); }
+#tile { left: 880px; top: 292px; width: 920px; height: 535px; }
+#tile .cadre { position: absolute; inset: 20px; border-radius: 18px; background: rgba(154,143,240,.10); border: 2px solid rgba(154,143,240,.45); }
+#lAbo { left: 220px; width: 600px; top: 862px; text-align: center; font-size: 48px; }
+#lVid { left: 900px; width: 880px; top: 862px; text-align: left; font-size: 48px; }
+#lVid span, #lAbo span { color: var(--orange); }
+#fUrl { left: 0; right: 0; bottom: 46px; text-align: center; font-size: 28px; font-weight: 600; color: var(--cool); letter-spacing: .04em; }
+
+/* ---------- guides (jamais dans le rendu final) ---------- */
+.guide { position: absolute; border: 3px dashed #FF3B8D; color: #FF3B8D; font: 700 22px 'Inter'; display: none; padding: 10px; }
+body.guides .guide { display: block; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<div class="mode" id="open">
+  <img id="oLogo" class="abs" src="assets/logo-410gone-blanc.svg" alt="">
+  <div id="oRule" class="abs"></div>
+  <div id="oTitre" class="abs titre"></div>
+  <div id="oSous" class="abs"></div>
+</div>
+
+<div class="mode" id="fin">
+  <img id="fLogo" class="abs" src="assets/logo-410gone-orange.svg" alt="">
+  <div id="ringHalo" class="abs"></div>
+  <div id="ring" class="abs"></div>
+  <div id="tile" class="abs">
+    <div class="cadre"></div>
+    <div class="br tl" style="left:0; top:0"></div><div class="br tr" style="right:0; top:0"></div>
+    <div class="br bl" style="left:0; bottom:0"></div><div class="br brr" style="right:0; bottom:0"></div>
+  </div>
+  <div id="lAbo" class="abs titre">Abonnez-<span>vous</span></div>
+  <div id="lVid" class="abs titre">À voir <span>ensuite</span></div>
+  <div id="fUrl" class="abs">410-gone.fr</div>
+  <div class="guide" style="left:340px; top:380px; width:360px; height:360px; border-radius:50%">abonnement<br>360 px, centre (520, 560)</div>
+  <div class="guide" style="left:900px; top:312px; width:880px; height:495px">vidéo 880 x 495<br>origine (900, 312)</div>
+</div>
+
+</div>
+
+<script src="../node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const q = new URLSearchParams(location.search);
+const MODE = q.get('mode') === 'fin' ? 'fin' : 'open';
+if (q.has('guides')) document.body.classList.add('guides');
+document.getElementById(MODE).style.display = 'block';
+
+const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out', duration: 0.6 } });
+
+if (MODE === 'open') {
+  document.getElementById('oTitre').textContent = q.get('titre') || 'Titre de la vidéo';
+  document.getElementById('oSous').textContent = q.get('sous') || '';
+  // entrée en cercle, logo, filet, titre, puis sortie en cercle : 2,6 s au total
+  tl.fromTo('#open', { clipPath: 'circle(0% at 50% 50%)' }, { clipPath: 'circle(80% at 50% 50%)', duration: 0.6, ease: 'power3.inOut' }, 0);
+  tl.fromTo('#oLogo', { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6 }, 0.2);
+  tl.fromTo('#oRule', { scaleX: 0 }, { scaleX: 1, duration: 0.45 }, 0.55);
+  tl.fromTo('#oTitre', { opacity: 0, y: 40 }, { opacity: 1, y: 0 }, 0.65);
+  tl.fromTo('#oSous', { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, 0.8);
+  tl.to('#open', { clipPath: 'circle(0% at 50% 50%)', duration: 0.5, ease: 'power3.inOut' }, 2.1);
+  window.DURATION = 2.6;
+} else {
+  // éléments posés en 1,2 s, puis seul le halo respire : rien ne bouge sous les éléments YouTube
+  tl.fromTo('#fLogo', { opacity: 0, y: -30 }, { opacity: 1, y: 0 }, 0);
+  tl.fromTo('#ring', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, ease: 'back.out(1.6)', duration: 0.7 }, 0.2);
+  tl.fromTo('#tile', { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.7 }, 0.35);
+  tl.fromTo('#lAbo', { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, 0.6);
+  tl.fromTo('#lVid', { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, 0.7);
+  tl.fromTo('#fUrl', { opacity: 0 }, { opacity: 1 }, 0.9);
+  tl.fromTo('#ringHalo', { opacity: 0, scale: 1 }, { opacity: 1, scale: 1.06, duration: 1.4, ease: 'sine.inOut', repeat: 9, yoyo: true }, 1.0);
+  window.DURATION = 15;
+}
+window.seek = t => { tl.seek(t, false); };
+window.ready = Promise.all([document.fonts.load('800 40px Montserrat'), document.fonts.load('600 40px Inter'),
+  ...[...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))]);
+if (!q.has('render')) tl.play();
+</script>
+</body>
+</html>

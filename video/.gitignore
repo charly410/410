@@ -1,5 +1,6 @@
-node_modules/
+build/log*.txt
 build/part*.mp4
 build/parts.txt
-build/log*.txt
 build/stills/
+habillage/stills/
+node_modules/

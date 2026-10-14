@@ -2,7 +2,7 @@
 
 **Cible :** entreprises, responsables de site, équipes marketing et techniques.
 **Format :** tuto / motion design, 16:9, avec chapitres YouTube (un par scène).
-**Durée estimée :** 3 min 20 environ (à peu près 475 mots de voix off, débit posé).
+**Durée estimée :** 3 min 45 environ, dont l'ouverture (2,6 s) et l'écran de fin (15 s). Voix off : à peu près 500 mots, débit posé.
 **Ton :** clair, direct, sans jargon inutile. On parle à quelqu'un qui a un site à gérer, pas à un développeur.
 **Règle d'écriture :** chaque notion est expliquée une seule fois, au moment où elle sert. Pas de récap parlé : l'arbre de décision final fait office de résumé.
 
@@ -18,7 +18,15 @@
 
 ---
 
-## 1. Le principe à retenir (0:15 à 0:40)
+## Ouverture 410 Gone (0:15 à 0:18)
+
+**VISUEL :** habillage réutilisable `video/habillage/` (mode `open`) : fond indigo, logo 410 Gone, filet orange, titre « Retirer une page de Google », sous-titre « La bonne méthode ». Entrée et sortie en cercle, 2,6 s au total. Juste après l'accroche, jamais avant : le spectateur doit d'abord savoir pourquoi il reste.
+
+**VOIX OFF :** aucune. Un court son de marque si on en a un, sinon la musique seule.
+
+---
+
+## 1. Le principe à retenir (0:18 à 0:43)
 
 **VISUEL :** un petit robot Googlebot revient sur une page. Une étiquette apparaît sur la page (« 410 », « noindex »). Le robot la lit, puis la page se détache de l'index, représenté comme une étagère de fiches.
 
@@ -28,17 +36,18 @@
 
 ---
 
-## 2. Choisir le bon signal (0:40 à 1:50)
+## 2. Choisir le bon signal (0:43 à 1:55)
 
 **VISUEL :** une question s'affiche : « Que devient la page ? ». Quatre cartes se retournent une à une, chacune avec son signal en gros caractères.
 
 ### 2a. La page disparaît pour de bon
 
-**VISUEL :** carte « 404 / 410 ». Le « 410 » pulse discrètement, clin d'œil au logo de l'agence.
+**VISUEL :** carte « 410 » en très gros. En dessous, plus petit et grisé, « 404 : introuvable ». Le « 410 » pulse, clin d'œil au logo de l'agence.
 
 **VOIX OFF :**
-> La page n'existe plus et rien ne la remplace ? Le serveur répond 404, ou 410.
-> Pour Google, les deux mènent au même résultat. La 410 dit simplement plus clairement que c'est définitif. Et oui, c'est aussi le nom de notre agence.
+> La page est supprimée et ne reviendra pas ? Le bon signal, c'est le code 410.
+> Une 404 dit seulement à Google « introuvable ». La 410 lui dit « supprimée, définitivement » : un signal plus fort, qu'il prend en compte plus vite.
+> Et oui, c'est aussi le nom de notre agence.
 
 ### 2b. La page a un remplaçant
 
@@ -64,7 +73,7 @@
 
 ---
 
-## 3. Le piège du robots.txt (1:50 à 2:20)
+## 3. Le piège du robots.txt (1:55 à 2:25)
 
 **VISUEL :** un fichier robots.txt avec la ligne `Disallow: /ancienne-gamme/`. Googlebot se cogne contre une porte fermée. Derrière la porte, l'étiquette « noindex » reste invisible. Dans Google, le résultat est toujours là, avec la mention « Aucune information n'est disponible pour cette page ».
 
@@ -75,7 +84,7 @@
 
 ---
 
-## 4. Accélérer, sans se tromper d'outil (2:20 à 2:50)
+## 4. Accélérer, sans se tromper d'outil (2:25 à 2:55)
 
 **VISUEL :** interface stylisée de Google Search Console, menu « Suppressions ». Un compte à rebours « six mois » s'affiche sur le résultat masqué. À côté, un fichier sitemap.xml dont des lignes s'effacent. Le logo stylisé de Bing Webmaster Tools apparaît en bas.
 
@@ -86,7 +95,7 @@
 
 ---
 
-## 5. Vérifier, dans les deux sens (2:50 à 3:15)
+## 5. Vérifier, dans les deux sens (2:55 à 3:20)
 
 **VISUEL :** l'outil d'inspection d'URL de la Search Console affiche « Exclue par la balise noindex ». Puis bascule : la page d'accueil du site, avec la même mention, et un voyant qui passe à l'alerte.
 
@@ -96,9 +105,9 @@
 
 ---
 
-## 6. Fin (3:15 à 3:30)
+## 6. L'arbre de décision (3:20 à 3:30)
 
-**VISUEL :** l'arbre de décision complet se construit une seule fois, sans voix sur chaque branche. Question centrale « Que devient la page ? », puis quatre branches : disparaît (404 / 410), remplacée (301 vers l'équivalent), en ligne hors Google (noindex ou X-Robots-Tag), privée (mot de passe). En bandeau sous l'arbre : « Pas de blocage robots.txt avant désindexation ». Le logo de l'agence s'affiche ensuite.
+**VISUEL :** l'arbre de décision complet se construit une seule fois, sans voix sur chaque branche. Question centrale « Que devient la page ? », puis quatre branches : supprimée pour de bon (410), remplacée (301 vers l'équivalent), en ligne hors Google (noindex ou X-Robots-Tag), privée (mot de passe). En bandeau sous l'arbre : « Pas de blocage robots.txt avant désindexation ».
 
 **VOIX OFF :**
 > Un signal clair, que Google peut lire. C'est tout le secret.
@@ -106,11 +115,21 @@
 
 ---
 
+## Écran de fin (3:30 à 3:45)
+
+**VISUEL :** habillage réutilisable `video/habillage/` (mode `fin`, fichier `fin-410.mp4`, 15 s). Logo en haut, cercle orange à gauche pour l'élément « S'abonner » de YouTube, cadre à braquets à droite pour l'élément « Vidéo ». Les éléments se posent ensuite dans YouTube Studio, aux zones indiquées par le mode `guides`.
+
+**VOIX OFF :** (propre à chaque vidéo, enregistrée à part)
+> Abonnez-vous pour ne pas rater la suite. Et si c'est un contenu publié par quelqu'un d'autre qui nuit à votre entreprise, la vidéo à l'écran est faite pour vous.
+
+---
+
 ## Notes de production
 
-- **Chapitres YouTube :** Le principe, Choisir le bon signal, Le piège du robots.txt, Accélérer, Vérifier.
-- **Mots à appuyer à l'enregistrement :** signal, 404 ou 410, 301, noindex, mot de passe, robots.txt, masquer.
+- **Chapitres YouTube :** Le principe (0:18), Choisir le bon signal, Le piège du robots.txt, Accélérer, Vérifier. Le premier chapitre doit commencer à 0:00 sur YouTube : l'intituler « Introduction ».
+- **Mots à appuyer à l'enregistrement :** signal, 410, définitivement, 301, noindex, mot de passe, robots.txt, masquer.
 - **Prononciation :** « quatre cent quatre », « quatre cent dix », « trois cent un », « no-index », « robots point texte », « X robots tag ».
 - **Textes à l'écran :** uniquement les signaux et les mots-clés, jamais de phrases entières.
 - **Vérification avant diffusion :** relire les intitulés exacts de la Search Console (« Suppressions », « Inspection de l'URL », rapport « Pages ») et de Bing Webmaster Tools, qui changent régulièrement. Vérifier aussi que l'article cité en appel à l'action contient bien l'arbre de décision.
-- **Hors périmètre volontaire :** le droit à l'oubli et le déréférencement de contenus publiés par des tiers (sujet de la vidéo précédente, destiné aux particuliers).
+- **Hors périmètre volontaire :** les contenus publiés par des tiers (avis, articles, copies de contenu). Ils relèvent d'autres leviers (demande juridique, droit d'auteur, contact de l'éditeur, e-réputation) et d'une vidéo dédiée, proposée dans l'écran de fin.
+- **Habillage :** l'ouverture se génère avec `node habillage/render.mjs open "Retirer une page de Google" "La bonne méthode" open.mp4` depuis `video/`. L'écran de fin `fin-410.mp4` est commun à toutes les vidéos.
