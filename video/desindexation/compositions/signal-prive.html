@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; }
+        #d-q { position: absolute; left: 620px; top: 140px; font-size: 30px; }
+        #d-titre { position: absolute; left: 620px; top: 186px; font-size: 60px; }
+        #d-zone { position: absolute; left: 630px; top: 320px; width: 1210px; height: 230px; border-radius: 28px; }
+        .d-cas { top: 30px; width: 360px; height: 170px; display: grid; place-items: center; text-align: center; padding: 0 20px; }
+        .d-cas .titre { font-size: 36px; }
+        #d-cadre { position: absolute; inset: 0; border: 6px solid var(--indigo); border-radius: 28px; }
+        #d-cadenas { position: absolute; left: 545px; top: -60px; width: 120px; height: 120px; }
+        #d-mdp { left: 1400px; top: 566px; }
+        #d-noindex { left: 640px; top: 640px; width: 560px; height: 150px; display: flex; align-items: center; gap: 26px; padding: 0 36px; }
+        #d-noindex .titre { font-size: 40px; }
+        #d-barre { position: absolute; left: 26px; top: 72px; width: 170px; height: 8px; border-radius: 4px; background: var(--orange); transform-origin: 0 50%; }
+        #d-lien { left: 1240px; top: 640px; width: 600px; height: 150px; display: flex; align-items: center; gap: 26px; padding: 0 36px; }
+        #d-lien .sous { font-size: 30px; color: var(--texte); }
+      </style>
+      <div id="root" data-composition-id="signal-prive" data-width="1920" data-height="1080">
+        <div class="sous" id="d-q">Que devient la page ?</div>
+        <div class="titre" id="d-titre">Personne ne doit y accéder</div>
+        <div id="d-zone">
+          <div class="carte d-cas" id="d-c1" style="left: 30px"><span class="titre">Préproduction</span></div>
+          <div class="carte d-cas" id="d-c2" style="left: 425px"><span class="titre">Espace client</span></div>
+          <div class="carte d-cas" id="d-c3" style="left: 820px"><span class="titre">Documents internes</span></div>
+          <div id="d-cadre"></div>
+          <svg id="d-cadenas" viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#31249f" /><path id="d-anse" d="M42 54 V42 a18 18 0 0 1 36 0 V54" fill="none" stroke="#ffb400" stroke-width="8" stroke-linecap="round" /><rect x="34" y="52" width="52" height="40" rx="9" fill="#ffb400" /><circle cx="60" cy="70" r="6" fill="#201a64" /></svg>
+        </div>
+        <div class="badge o" id="d-mdp">Mot de passe</div>
+        <div class="carte" id="d-noindex"><span class="titre">noindex</span><span class="sous" style="font-size: 30px">ne suffit pas</span><div id="d-barre"></div></div>
+        <div class="carte" id="d-lien">
+          <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#31249f" stroke-width="2.4" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2" /><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2" /></svg>
+          <span class="sous">Lisible par toute personne qui a le lien</span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const T = (v) => v + 2.64 - 73.8;
+          const tl = gsap.timeline({ paused: true });
+          const rise = (s, t) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t);
+          rise("#d-q", 0.05);
+          rise("#d-titre", 0.2);
+          // « Une préproduction ? Un espace client ? Des documents internes ? »
+          rise("#d-c1", 0.35);
+          rise("#d-c2", T(72.48));
+          rise("#d-c3", T(73.62));
+          // « Le noindex ne suffit pas, la page reste lisible par toute personne qui a le lien »
+          rise("#d-noindex", T(74.9));
+          tl.fromTo("#d-barre", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.out" }, T(76.0));
+          rise("#d-lien", T(76.8));
+          // « Protégez-la par un mot de passe » : le cadre se ferme, le cadenas se verrouille
+          tl.fromTo("#d-cadre", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, T(80.0));
+          tl.fromTo("#d-cadenas", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.8)" }, T(80.2));
+          tl.fromTo("#d-anse", { y: -10 }, { y: 0, duration: 0.25, ease: "power2.in" }, T(80.8));
+          tl.fromTo("#d-mdp", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, T(80.9));
+          window.__timelines["signal-prive"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

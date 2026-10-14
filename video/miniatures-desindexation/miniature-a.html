@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Miniature A : présentateur</title>
+<!--
+  Variante A : le personnage illustré + un mot choc.
+  Hypothèse : un visage (même illustré) qui réagit attire le regard plus qu'un objet.
+  Trois éléments : le présentateur, le disque orange derrière lui, le texte « Hors de Google ».
+-->
+<style>
+@font-face { font-family: 'Montserrat'; src: url('../desindexation/assets/montserrat-variable.woff') format('woff'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('../desindexation/assets/inter-variable.woff') format('woff'); font-weight: 100 900; }
+:root { --indigo: #31249F; --indigo-profond: #201A64; --orange: #FFB400; --ghost: #F7F5FA; --encre-sur-indigo: #9A8FF0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse 900px 700px at 300px 380px, #2A2083 0%, var(--indigo-profond) 70%); }
+.abs { position: absolute; }
+
+/* 1. Disque orange : détache le personnage (polo indigo) du fond indigo */
+#disque { left: 30px; top: 70px; width: 560px; height: 560px; border-radius: 50%; background: var(--orange); }
+
+/* 2. Le présentateur, cadré serré sur le buste */
+#presentateur { left: -10px; top: -40px; width: 680px; height: 797px; }
+#presentateur svg, #presentateur img { width: 100%; height: 100%; display: block; }
+
+/* 3. Le texte, en haut à droite (le bas droit est réservé à la durée YouTube) */
+#mot { left: 640px; top: 120px; font-family: 'Montserrat', sans-serif; font-weight: 800;
+  font-size: 150px; line-height: .92; letter-spacing: -0.035em; color: #fff; }
+#mot .g { color: var(--orange); }
+</style>
+</head>
+<body>
+  <div class="abs" id="disque"></div>
+  <div class="abs" id="presentateur"></div>
+  <div class="abs" id="mot">Hors<br>de<br><span class="g">Google</span></div>
+
+<script>
+// Le SVG du présentateur est chargé tel quel depuis le projet vidéo, puis son expression est ajustée
+// (sourire ouvert, sourcils relevés, regard vers le texte). Sans accès fichier (navigateur ordinaire),
+// repli sur l'image d'origine, expression neutre.
+const cible = document.getElementById('presentateur');
+const src = '../desindexation/assets/presentateur.svg';
+window.ready = fetch(src).then(r => r.text()).then(txt => {
+  cible.innerHTML = txt;
+  const svg = cible.querySelector('svg');
+  svg.removeAttribute('width'); svg.removeAttribute('height');
+  svg.querySelector('#pr-b0').setAttribute('opacity', '0');
+  svg.querySelector('#pr-b2').setAttribute('opacity', '1');
+  svg.querySelector('#pr-sourcils').setAttribute('transform', 'translate(0 -10)');
+  for (const id of ['pr-oeil-g', 'pr-oeil-d']) {
+    const g = svg.querySelector('#' + id);
+    g.querySelectorAll('circle').forEach(c => c.setAttribute('cx', +c.getAttribute('cx') + 4));
+  }
+}).catch(() => { cible.innerHTML = '<img src="' + src + '" alt="">'; });
+</script>
+</body>
+</html>

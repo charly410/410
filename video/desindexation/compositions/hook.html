@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; }
+        #h-serp { left: 360px; top: 96px; width: 1200px; height: 880px; overflow: hidden; }
+        #h-barre { position: absolute; left: 56px; top: 44px; width: 1088px; height: 88px; border-radius: 44px; border: 3px solid var(--ligne); display: flex; align-items: center; padding: 0 40px; gap: 22px; }
+        #h-loupe { width: 34px; height: 34px; flex: none; }
+        #h-requete { font-size: 36px; font-weight: 600; color: var(--texte); white-space: nowrap; overflow: hidden; width: 0; }
+        .h-res { position: absolute; left: 56px; width: 1088px; padding: 22px 30px 22px 36px; border-radius: 16px; }
+        .h-res .u { font-size: 24px; color: var(--gris); font-weight: 500; }
+        .h-res .t { font-size: 36px; font-weight: 700; color: var(--indigo); margin-top: 4px; }
+        .h-res .d { font-size: 24px; color: var(--gris); margin-top: 6px; }
+        .h-res .marque { position: absolute; left: 0; top: 14px; bottom: 14px; width: 8px; border-radius: 4px; background: var(--orange); }
+        .h-res .dom { color: var(--profond); font-weight: 700; border-radius: 6px; padding: 0 4px; }
+        #h-spam { position: absolute; left: 56px; top: 690px; width: 1088px; }
+        .h-sp { height: 34px; margin-bottom: 12px; border-radius: 8px; background: var(--pale); font-size: 22px; color: var(--gris); padding: 4px 16px; white-space: nowrap; overflow: hidden; }
+        #h-propre { position: absolute; left: 150px; top: 380px; width: 900px; text-align: center; }
+        #h-propre .titre { font-size: 56px; }
+        #h-coche { width: 120px; height: 120px; margin: 0 auto 28px; border-radius: 50%; background: var(--indigo); display: grid; place-items: center; }
+      </style>
+      <div id="root" data-composition-id="hook" data-width="1920" data-height="1080">
+        <div class="carte" id="h-serp">
+          <div id="h-barre">
+            <svg id="h-loupe" viewBox="0 0 24 24" fill="none" stroke="#5d6378" stroke-width="2.6" stroke-linecap="round"><circle cx="10" cy="10" r="7" /><path d="M15.5 15.5L21 21" /></svg>
+            <div id="h-requete">site : monsite.fr</div>
+          </div>
+          <div class="h-res" id="h-r1" style="top: 170px">
+            <div class="marque"></div>
+            <div class="u"><span class="dom">preprod.monsite.fr</span></div>
+            <div class="t">Accueil - Mon site (version de test)</div>
+            <div class="d">Lorem ipsum, page en cours de recette, ne pas diffuser…</div>
+          </div>
+          <div class="h-res" id="h-r2" style="top: 340px">
+            <div class="marque"></div>
+            <div class="u"><span class="dom">monsite.fr</span> › catalogue-2019</div>
+            <div class="t">Catalogue 2019 - Gamme arrêtée</div>
+            <div class="d">Produits plus commercialisés depuis 2021.</div>
+          </div>
+          <div class="h-res" id="h-r3" style="top: 510px">
+            <div class="marque"></div>
+            <div class="u"><span class="dom">monsite.fr</span> › ?p=8f3a91</div>
+            <div class="t">Cheap replica watches - casino bonus 2026</div>
+            <div class="d">Buy now best price free spins replica…</div>
+          </div>
+          <div id="h-propre">
+            <div id="h-coche"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ffb400" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div>
+            <div class="titre">Les sortir de Google, proprement.</div>
+          </div>
+          <div id="h-spam">
+            <div class="h-sp" id="h-sp1">monsite.fr › ?p=8f3a92 · Cheap replica bags - best price</div>
+            <div class="h-sp" id="h-sp2">monsite.fr › ?p=8f3a93 · Casino free spins no deposit</div>
+            <div class="h-sp" id="h-sp3">monsite.fr › ?p=8f3a94 · Replica sneakers outlet online</div>
+            <div class="h-sp" id="h-sp4">monsite.fr › ?p=8f3a95 · Pharmacy cheap pills discount</div>
+          </div>
+        </div>
+        <div class="badge o" id="h-t1" style="left: 1290px; top: 300px">Préproduction</div>
+        <div class="badge o" id="h-t2" style="left: 1290px; top: 470px">Gamme arrêtée</div>
+        <div class="badge o" id="h-t3" style="left: 1290px; top: 640px">Piratage</div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          const pop = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, t);
+          const rise = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t);
+
+          tl.fromTo("#h-serp", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0);
+          tl.fromTo("#h-requete", { width: 0 }, { width: 330, duration: 0.6, ease: "steps(14)" }, 0.15);
+          // « Votre préproduction dans Google »
+          rise("#h-r1", 0.5);
+          pop("#h-t1", 1.1);
+          // « Une gamme arrêtée depuis des années »
+          rise("#h-r2", 2.86);
+          pop("#h-t2", 3.3);
+          // « Ou des centaines de pages de spam après un piratage »
+          rise("#h-r3", 5.26);
+          ["#h-sp1", "#h-sp2", "#h-sp3", "#h-sp4"].forEach((s, i) => tl.fromTo(s, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.25 }, 5.76 + i * 0.18));
+          pop("#h-t3", 7.66);
+
+          // « Toutes ces pages ont un point commun » : la carte glisse pour laisser entrer le présentateur
+          tl.to(["#h-t1", "#h-t2", "#h-t3"], { opacity: 0, duration: 0.3 }, 8.5);
+          tl.to("#h-serp", { x: -280, scale: 0.92, transformOrigin: "0% 50%", duration: 0.7, ease: "power3.inOut" }, 8.6);
+          // « elles sont sur votre site » : le domaine commun s'allume
+          tl.to(".h-res .dom", { backgroundColor: "#ffb400", duration: 0.3, stagger: 0.12 }, 10.4);
+
+          // « les faire sortir de Google, proprement »
+          ["#h-sp4", "#h-sp3", "#h-sp2", "#h-sp1", "#h-r3", "#h-r2", "#h-r1"].forEach((s, i) => tl.to(s, { opacity: 0, x: 80, duration: 0.25, ease: "power2.in" }, 12.9 + i * 0.07));
+          rise("#h-propre", 13.6);
+          window.__timelines["hook"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

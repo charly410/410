@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- FICHIER GÉNÉRÉ par build/preparer.py à partir de build/presentateur.template.html : ne pas éditer à la main. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        #pr-perso {
+          position: absolute;
+          left: 1180px;
+          top: 260px;
+          width: 700px;
+          height: 820px;
+        }
+        #pr-perso svg {
+          display: block;
+          width: 700px;
+          height: 820px;
+        }
+      </style>
+      <div id="root" data-composition-id="presentateur" data-width="1920" data-height="1080">
+        <div id="pr-perso"><!--SVG--></div>
+      </div>
+      <script>
+        (function () {
+          const MOUTH = /*MOUTH*/[];
+          const NODS = /*NODS*/[];
+          const BLINKS = /*BLINKS*/[];
+          const BROWS = /*BROWS*/[];
+          const POSES = /*POSES*/{};
+          const tl = gsap.timeline({ paused: true });
+
+          // entrée par la droite pendant le hook, puis passage en colonne de gauche (sous l'ouverture)
+          gsap.set("#pr-perso", { transformOrigin: "50% 100%", scale: 1 });
+          tl.fromTo("#pr-perso", { opacity: 0, x: 420 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, POSES.entree);
+          tl.set("#pr-perso", { x: -1238, scale: 0.72 }, POSES.colonne);
+
+          // respiration : léger mouvement continu du buste
+          tl.fromTo("#pr-corps", { y: 0 }, { y: 3, duration: 2.2, ease: "sine.inOut", yoyo: true, repeat: 80 }, 0);
+
+          // bouche : une forme visible à la fois, calée image par image sur l'enveloppe de la voix
+          const shapes = ["#pr-b0", "#pr-b1", "#pr-b2", "#pr-b3"];
+          for (const [t, lv] of MOUTH) {
+            shapes.forEach((s, i) => tl.set(s, { opacity: i === lv ? 1 : 0 }, t));
+          }
+
+          // hochement discret au début de chaque phrase
+          for (const t of NODS) {
+            tl.to("#pr-tete", { rotation: 2.2, svgOrigin: "350 500", duration: 0.22, ease: "sine.out" }, t);
+            tl.to("#pr-tete", { rotation: 0, svgOrigin: "350 500", duration: 0.4, ease: "sine.inOut" }, t + 0.22);
+          }
+
+          // clignements
+          for (const t of BLINKS) {
+            tl.to(["#pr-oeil-g", "#pr-oeil-d"], { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.07, ease: "none" }, t);
+            tl.to(["#pr-oeil-g", "#pr-oeil-d"], { scaleY: 1, transformOrigin: "50% 50%", duration: 0.09, ease: "none" }, t + 0.07);
+          }
+
+          // sourcils levés sur les mots d'insistance
+          for (const t of BROWS) {
+            tl.to("#pr-sourcils", { y: -9, duration: 0.18, ease: "power2.out" }, t);
+            tl.to("#pr-sourcils", { y: 0, duration: 0.45, ease: "power2.inOut" }, t + 0.7);
+          }
+
+          window.__timelines["presentateur"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

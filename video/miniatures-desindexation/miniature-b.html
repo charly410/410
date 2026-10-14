@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Miniature B : code 410</title>
+<!--
+  Variante B : le code HTTP comme héros typographique.
+  Hypothèse : la promesse d'une réponse technique précise (410 plutôt que 404) attire
+  les responsables de site qui connaissent déjà la 404. Clin d'œil au nom de l'agence.
+  Trois éléments : « 410 », les deux équerres orange, « pas 404 ».
+-->
+<style>
+@font-face { font-family: 'Montserrat'; src: url('../desindexation/assets/montserrat-variable.woff') format('woff'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('../desindexation/assets/inter-variable.woff') format('woff'); font-weight: 100 900; }
+:root { --indigo: #31249F; --indigo-profond: #201A64; --orange: #FFB400; --ghost: #F7F5FA; --encre-sur-indigo: #9A8FF0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse 1000px 700px at 420px 300px, #3A2DB4 0%, var(--indigo) 45%, var(--indigo-profond) 100%); }
+.abs { position: absolute; }
+
+/* 1. Le « 410 » géant, centré, encadré comme dans le logo par deux équerres orange */
+#code { left: 0; width: 1280px; top: 6px; text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 800;
+  font-size: 470px; line-height: 1; letter-spacing: -0.04em; color: #fff; padding-right: 20px; }
+.equerre { width: 130px; height: 130px; border: 0 solid var(--orange); }
+#eq-haut { left: 1030px; top: 48px; border-top-width: 28px; border-right-width: 28px; }
+#eq-bas { left: 120px; top: 330px; border-bottom-width: 28px; border-left-width: 28px; }
+
+/* 2. « pas 404 », sous le code, centré : le bas droit reste libre pour la durée */
+#pas { left: 0; width: 1280px; top: 500px; text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 800;
+  font-size: 150px; line-height: 1; letter-spacing: -0.03em; color: var(--encre-sur-indigo); white-space: nowrap; }
+</style>
+</head>
+<body>
+  <div class="abs equerre" id="eq-haut"></div>
+  <div class="abs equerre" id="eq-bas"></div>
+  <div class="abs" id="code">410</div>
+  <div class="abs" id="pas">pas 404</div>
+</body>
+</html>

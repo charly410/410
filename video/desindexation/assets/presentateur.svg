@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 820" width="700" height="820">
+  <!-- Présentateur 410 Gone : personnage illustré en polo indigo. Les groupes nommés sont animés par la composition. -->
+  <defs>
+    <clipPath id="pr-poitrine"><path d="M70 820 C 70 640 150 585 250 565 L 450 565 C 550 585 630 640 630 820 Z"/></clipPath>
+  </defs>
+  <g id="pr-corps">
+    <!-- cou -->
+    <path d="M300 470 L 300 560 Q 350 590 400 560 L 400 470 Z" fill="#E7B48F"/>
+    <path d="M300 520 Q 350 545 400 520 L 400 470 L 300 470 Z" fill="#D69E78"/>
+    <!-- polo -->
+    <path d="M70 820 C 70 640 150 585 250 565 L 450 565 C 550 585 630 640 630 820 Z" fill="#31249F"/>
+    <g clip-path="url(#pr-poitrine)">
+      <path d="M70 700 C 160 660 220 690 240 820 L 70 820 Z" fill="#2A1F8C" opacity=".55"/>
+      <path d="M630 700 C 540 660 480 690 460 820 L 630 820 Z" fill="#2A1F8C" opacity=".55"/>
+    </g>
+    <!-- patte de boutonnage -->
+    <path d="M330 575 L 370 575 L 368 690 L 332 690 Z" fill="#2A1F8C"/>
+    <circle cx="350" cy="612" r="6" fill="#F7F5FA"/>
+    <circle cx="350" cy="652" r="6" fill="#F7F5FA"/>
+    <!-- col -->
+    <path d="M250 565 L 350 640 L 300 655 L 232 590 Z" fill="#3B2EB8"/>
+    <path d="M450 565 L 350 640 L 400 655 L 468 590 Z" fill="#3B2EB8"/>
+    <path d="M262 566 Q 350 600 438 566 L 350 640 Z" fill="#E7B48F"/>
+    <path d="M262 566 Q 350 600 438 566 L 432 572 Q 350 604 268 572 Z" fill="#D69E78"/>
+    <!-- liseré orange du col -->
+    <path d="M232 590 L 300 655" stroke="#FFB400" stroke-width="5" stroke-linecap="round"/>
+    <path d="M468 590 L 400 655" stroke="#FFB400" stroke-width="5" stroke-linecap="round"/>
+    <!-- logo 410 brodé, côté cœur -->
+    <g id="pr-logo" transform="translate(410 640) scale(0.085)">
+      <path fill="#FFFFFF" d="M665.75,321.63h-37.96l-220.96,238.36v36.45h215.74v81.11h43.18v-81.11h63.53v-38.49h-63.53v-236.33ZM622.58,383.31v174.65h-159.31c34.64-36.66,61.18-70.290,79.59-89.9,18.2-19.37,44.77-47.61,79.72-84.75Z" transform="translate(-284 -240)"/>
+      <path fill="#FFFFFF" d="M811.41,330.69c0,10.73-3.62,20.53-11.07,29.95-7.77,9.83-18.87,18.3-32.98,25.15-14.41,7.01-31.28,11.67-50.14,13.84l-8.16.94v37.2l10.21-1.07c22.92-2.4,43.670-7.6,61.67-15.45,10.7-4.67,20.3-10.35,28.71-16.97v273.26h43.18v-355.92h-41.41v9.06Z" transform="translate(-284 -240)"/>
+      <path fill="#FFFFFF" d="M1494.97,408.71c-12.72-26.98-30.63-48.38-53.26-63.61-19.74-13.29-42.13-20.87-66.68-22.66l.02-.43h-11.34s-.07,0-.1,0h-8.81s-272.23,0-272.23,0h0s-8.44,0-8.44,0c-.03,0-.07,0-.1,0h-8.83v.3c-25.53,1.44-48.83,9.05-69.35,22.78-22.78,15.23-40.770,36.64-53.49,63.62-12.58,26.71-18.95,57.56-18.95,91.72s6.38,64.55,18.96,91.11c12.71,26.85,30.72,48.12,53.51,63.21,20.5,13.59,43.8,21.12,69.32,22.55v.3h308.39v-.33c25.12-1.58,47.99-9.12,68.09-22.53,22.64-15.09,40.56-36.35,53.29-63.2,12.58-26.58,18.96-57.23,18.96-91.11s-6.38-65-18.96-91.72ZM1074.55,641.05c-21.170,0-40.16-5.84-56.43-17.36-16.46-11.62-29.46-28.18-38.66-49.21-9.35-21.38-14.09-46.3-14.09-74.06s4.74-53.17,14.1-74.7c9.21-21.17,22.23-37.88,38.69-49.64,16.28-11.63,35.25-17.54,56.39-17.54h8.81v-.07s272.23,0,272.23,0v.07h8.44c20.83,0,39.51,5.89,55.52,17.5,16.2,11.76,29.02,28.46,38.11,49.63,9.23,21.54,13.91,46.69,13.91,74.74s-4.68,52.71-13.91,74.1c-9.07,21.03-21.88,37.59-38.08,49.21-15.99,11.49-34.68,17.31-55.55,17.31h-8.44v.07h-272.23v-.07s-8.81,0-8.81,0Z" transform="translate(-284 -240)"/>
+      <polygon fill="#FFB400" points="1635.99 240.85 1635.99 401.17 1594.96 401.17 1594.96 281.13 1472.66 281.13 1472.66 240.85 1635.99 240.85" transform="translate(-284 -240)"/>
+      <polygon fill="#FFB400" points="284.78 757.23 284.78 596.91 325.82 596.91 325.82 716.95 448.11 716.95 448.11 757.23 284.78 757.23" transform="translate(-284 -240)"/>
+    </g>
+  </g>
+  <g id="pr-tete">
+    <!-- oreilles -->
+    <ellipse cx="222" cy="330" rx="26" ry="40" fill="#E7B48F"/>
+    <ellipse cx="478" cy="330" rx="26" ry="40" fill="#E7B48F"/>
+    <ellipse cx="226" cy="332" rx="12" ry="22" fill="#D69E78"/>
+    <ellipse cx="474" cy="332" rx="12" ry="22" fill="#D69E78"/>
+    <!-- visage -->
+    <path d="M230 260 C 230 150 470 150 470 260 L 470 360 C 470 450 410 505 350 505 C 290 505 230 450 230 360 Z" fill="#F1C6A5"/>
+    <!-- joues -->
+    <ellipse cx="282" cy="390" rx="24" ry="13" fill="#E99A86" opacity=".45"/>
+    <ellipse cx="418" cy="390" rx="24" ry="13" fill="#E99A86" opacity=".45"/>
+    <!-- cheveux : mèche relevée -->
+    <path d="M224 292 C 200 190 255 120 345 112 C 440 104 505 160 478 292 C 472 250 462 226 446 212 C 410 232 330 236 276 214 C 252 236 236 260 224 292 Z" fill="#8A5A3B"/>
+    <path d="M276 214 C 290 150 380 120 452 160 C 440 120 400 98 350 102 C 300 104 262 130 250 170 C 262 160 280 150 300 148 C 286 168 280 190 276 214 Z" fill="#9E6A47"/>
+    <path d="M300 148 C 340 130 400 132 430 150" stroke="#B57E57" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <!-- sourcils -->
+    <g id="pr-sourcils">
+      <path d="M272 268 Q 300 252 326 264" stroke="#6E4630" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M374 264 Q 400 252 428 268" stroke="#6E4630" stroke-width="10" fill="none" stroke-linecap="round"/>
+    </g>
+    <!-- lunettes -->
+    <g fill="none" stroke="#201A64" stroke-width="7">
+      <rect x="262" y="282" width="78" height="56" rx="26"/>
+      <rect x="360" y="282" width="78" height="56" rx="26"/>
+      <path d="M340 304 Q 350 296 360 304"/>
+      <path d="M262 300 L 232 292"/>
+      <path d="M438 300 L 468 292"/>
+    </g>
+    <!-- yeux -->
+    <g id="pr-yeux">
+      <g id="pr-oeil-g" transform="translate(301 310)"><ellipse rx="13" ry="14" fill="#FFFFFF"/><circle cx="1" cy="1" r="8" fill="#2B1E1A"/><circle cx="4" cy="-3" r="2.5" fill="#FFFFFF"/></g>
+      <g id="pr-oeil-d" transform="translate(399 310)"><ellipse rx="13" ry="14" fill="#FFFFFF"/><circle cx="1" cy="1" r="8" fill="#2B1E1A"/><circle cx="4" cy="-3" r="2.5" fill="#FFFFFF"/></g>
+    </g>
+    <!-- nez -->
+    <path d="M350 322 Q 342 360 336 372 Q 350 382 364 372" stroke="#D69E78" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <!-- bouche : quatre formes, une seule visible à la fois -->
+    <g id="pr-bouches" transform="translate(350 420)">
+      <g id="pr-b0"><path d="M-34 -4 Q 0 18 34 -4" stroke="#7A2E2A" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+      <g id="pr-b1" opacity="0"><path d="M-30 -6 Q 0 -10 30 -6 Q 0 14 -30 -6 Z" fill="#6B1F24"/><path d="M-30 -6 Q 0 -10 30 -6" stroke="#7A2E2A" stroke-width="4" fill="none"/></g>
+      <g id="pr-b2" opacity="0"><path d="M-30 -8 Q 0 -12 30 -8 Q 26 22 0 26 Q -26 22 -30 -8 Z" fill="#6B1F24"/><path d="M-22 -8 L 22 -8 L 20 -1 L -20 -1 Z" fill="#FFFFFF"/><ellipse cx="0" cy="17" rx="14" ry="6" fill="#D0605C"/></g>
+      <g id="pr-b3" opacity="0"><path d="M-32 -10 Q 0 -14 32 -10 Q 28 36 0 40 Q -28 36 -32 -10 Z" fill="#6B1F24"/><path d="M-24 -10 L 24 -10 L 22 -2 L -22 -2 Z" fill="#FFFFFF"/><ellipse cx="0" cy="28" rx="16" ry="8" fill="#D0605C"/></g>
+    </g>
+  </g>
+</svg>

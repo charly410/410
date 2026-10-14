@@ -4,3 +4,7 @@ build/parts.txt
 build/stills/
 habillage/stills/
 node_modules/
+desindexation/.hyperframes/
+desindexation/rendu/render.log
+desindexation/build/cues-musique.json
+desindexation/build/__pycache__/

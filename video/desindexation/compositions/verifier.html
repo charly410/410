@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; }
+        #g-a, #g-b { position: absolute; inset: 0; }
+        #g-titre { position: absolute; left: 620px; top: 160px; font-size: 60px; }
+        #g-site { left: 640px; top: 290px; width: 760px; height: 96px; display: flex; align-items: center; gap: 22px; padding: 0 34px; border-radius: 48px; }
+        #g-site .requete { font-size: 34px; font-weight: 600; }
+        #g-tampon { position: absolute; left: 1150px; top: 280px; padding: 10px 28px; border: 7px solid var(--orange); border-radius: 14px; color: var(--profond); background: rgba(255, 180, 0, 0.18); font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 40px; transform-origin: 50% 50%; }
+        #g-insp { left: 640px; top: 430px; width: 760px; height: 300px; overflow: hidden; }
+        #g-insp .tete { height: 76px; background: var(--indigo); color: #fff; display: flex; align-items: center; padding: 0 30px; font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 28px; }
+        #g-insp .u { margin: 30px 30px 0; font-size: 28px; font-weight: 600; }
+        #g-statut { margin: 26px 30px 0; display: inline-flex; align-items: center; gap: 14px; padding: 14px 24px; border-radius: 14px; background: var(--pale); font-weight: 700; font-size: 28px; color: var(--profond); }
+        #g-statut i { width: 18px; height: 18px; border-radius: 50%; background: var(--orange); display: block; }
+        #g-pages { left: 1440px; top: 430px; width: 400px; height: 300px; padding: 26px 30px; }
+        #g-pages .titre { font-size: 30px; }
+        #g-graphe { position: absolute; left: 30px; right: 30px; bottom: 30px; height: 160px; display: flex; align-items: flex-end; gap: 18px; }
+        #g-graphe div { flex: 1; border-radius: 8px 8px 0 0; transform-origin: 50% 100%; }
+        #g-delai { position: absolute; left: 640px; top: 790px; width: 1200px; }
+        #g-delai .piste { position: relative; height: 18px; border-radius: 9px; background: var(--ligne); }
+        #g-delai .rempli { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: 9px; background: var(--indigo); transform-origin: 0 50%; }
+        #g-delai .bornes { display: flex; justify-content: space-between; margin-top: 18px; font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 32px; color: var(--profond); }
+        #g-freq { position: absolute; left: 640px; top: 930px; font-size: 28px; }
+        #g-titre2 { position: absolute; left: 620px; top: 160px; font-size: 60px; }
+        #g-accueil { left: 640px; top: 300px; width: 660px; height: 400px; padding: 34px 38px; }
+        #g-accueil .t { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 40px; color: var(--profond); }
+        #g-accueil .u { font-size: 24px; color: var(--gris); font-weight: 600; margin-top: 6px; }
+        #g-code { margin-top: 34px; padding: 22px 26px; border-radius: 14px; background: var(--profond); color: #c9c4f5; font-size: 24px; white-space: nowrap; }
+        #g-code b { color: var(--orange); }
+        #g-oubli { left: 660px; top: 740px; }
+        #g-grille { position: absolute; left: 1360px; top: 300px; width: 480px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        #g-grille div { height: 120px; border-radius: 14px; background: #fff; box-shadow: 0 8px 20px rgba(32, 26, 100, 0.12); }
+        #g-sort { left: 1340px; top: 760px; }
+      </style>
+      <div id="root" data-composition-id="verifier" data-width="1920" data-height="1080">
+        <div id="g-a">
+          <div class="titre" id="g-titre">Vérifier</div>
+          <div class="carte" id="g-site">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#5d6378" stroke-width="2.6" stroke-linecap="round"><circle cx="10" cy="10" r="7" /><path d="M15.5 15.5L21 21" /></svg>
+            <span class="requete mono">site:monsite.fr</span>
+          </div>
+          <div id="g-tampon">Pas fiable</div>
+          <div class="carte" id="g-insp">
+            <div class="tete">Inspection de l'URL</div>
+            <div class="u">monsite.fr/catalogue-2019</div>
+            <div id="g-statut"><i></i>Exclue par la balise « noindex »</div>
+          </div>
+          <div class="carte" id="g-pages">
+            <div class="titre">Indexation des pages</div>
+            <div id="g-graphe">
+              <div style="height: 90%; background: var(--indigo)"></div>
+              <div style="height: 82%; background: var(--indigo)"></div>
+              <div style="height: 70%; background: var(--indigo)"></div>
+              <div style="height: 58%; background: var(--indigo)"></div>
+              <div style="height: 30%; background: var(--orange)"></div>
+            </div>
+          </div>
+          <div id="g-delai">
+            <div class="piste"><div class="rempli" id="g-rempli"></div></div>
+            <div class="bornes"><span id="g-b1">Quelques jours</span><span id="g-b2">Quelques semaines</span></div>
+          </div>
+          <div class="sous" id="g-freq">Selon la fréquence de passage de Google sur votre site</div>
+        </div>
+        <div id="g-b">
+          <div class="titre" id="g-titre2">Et surveillez l'inverse</div>
+          <div class="carte" id="g-accueil">
+            <div class="t">Accueil</div>
+            <div class="u">monsite.fr, en ligne depuis hier</div>
+            <div id="g-code" class="mono">&lt;meta name="robots" content="<b>noindex</b>"&gt;</div>
+          </div>
+          <div class="badge o" id="g-oubli">Oublié à la mise en ligne</div>
+          <div id="g-grille"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="badge i" id="g-sort">Tout le site sort de Google</div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const T = (v) => v + 2.64 - 133.4;
+          const tl = gsap.timeline({ paused: true });
+          const rise = (s, t) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t);
+          const pop = (s, t) => tl.fromTo(s, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, t);
+          // « Pour vérifier, oubliez la commande site: dans Google, elle n'est pas fiable »
+          rise("#g-titre", 0.1);
+          rise("#g-site", T(132.3));
+          tl.fromTo("#g-tampon", { opacity: 0, scale: 2, rotation: -16 }, { opacity: 1, scale: 1, rotation: -7, duration: 0.4, ease: "back.out(1.5)" }, T(134.6));
+          tl.to("#g-site", { opacity: 0.45, duration: 0.3 }, T(134.9));
+          // « Utilisez l'inspection d'URL et le rapport d'indexation des pages »
+          rise("#g-insp", T(136.0));
+          tl.fromTo("#g-statut", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4 }, T(137.0));
+          rise("#g-pages", T(137.8));
+          tl.fromTo("#g-graphe div", { scaleY: 0 }, { scaleY: 1, duration: 0.45, stagger: 0.08, ease: "power2.out" }, T(138.3));
+          // « Comptez de quelques jours à quelques semaines »
+          tl.fromTo("#g-delai", { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(141.2));
+          tl.fromTo("#g-b1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(141.4));
+          tl.fromTo("#g-rempli", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "power1.inOut" }, T(141.5));
+          tl.fromTo("#g-b2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(142.4));
+          rise("#g-freq", T(143.3));
+          // « Et surveillez aussi l'inverse »
+          tl.to("#g-a", { opacity: 0, duration: 0.4 }, T(145.6));
+          rise("#g-titre2", T(146.0));
+          rise("#g-accueil", T(147.2));
+          tl.fromTo("#g-code", { backgroundColor: "#201a64" }, { backgroundColor: "#31249f", duration: 0.3, yoyo: true, repeat: 3 }, T(147.9));
+          pop("#g-oubli", T(149.3));
+          // « et c'est tout votre site qui sort de Google »
+          tl.fromTo("#g-grille div", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.04 }, T(147.6));
+          tl.to("#g-grille div", { opacity: 0, y: 140, duration: 0.45, stagger: 0.08, ease: "power2.in" }, T(151.2));
+          pop("#g-sort", T(152.2));
+          window.__timelines["verifier"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

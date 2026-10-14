@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; }
+        #e-alerte { position: absolute; left: 620px; top: 150px; display: flex; align-items: center; gap: 26px; }
+        #e-alerte .titre { font-size: 60px; }
+        #e-a { position: absolute; inset: 0; }
+        #e-fichier { position: absolute; left: 640px; top: 300px; width: 600px; background: var(--profond); border-radius: 20px; padding: 26px 34px; box-shadow: 0 18px 50px rgba(32, 26, 100, 0.25); }
+        #e-fichier .nom { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 28px; color: #fff; margin-bottom: 16px; }
+        #e-fichier .ligne { font-size: 28px; color: #c9c4f5; line-height: 1.7; white-space: nowrap; }
+        #e-disallow { color: var(--orange); font-weight: 700; padding: 0 6px; border-radius: 6px; }
+        #e-porte { position: absolute; left: 1330px; top: 290px; width: 220px; height: 330px; border-radius: 14px 14px 0 0; background: var(--indigo); border: 10px solid var(--profond); }
+        #e-porte .poignee { position: absolute; right: 22px; top: 160px; width: 22px; height: 22px; border-radius: 50%; background: var(--orange); }
+        #e-porte .plaque { position: absolute; left: 22px; right: 22px; top: 40px; padding: 8px 0; border-radius: 8px; background: var(--orange); color: var(--profond); text-align: center; font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 22px; }
+        #e-robot { position: absolute; left: 1620px; top: 400px; width: 190px; }
+        #e-tags { position: absolute; left: 1330px; top: 640px; display: flex; gap: 14px; }
+        #e-tags .badge { position: relative; }
+        #e-nonlus { left: 1600px; top: 650px; }
+        #e-serp { left: 640px; top: 770px; width: 1180px; height: 170px; padding: 28px 36px; }
+        #e-serp .u { font-size: 24px; color: var(--gris); font-weight: 600; }
+        #e-serp .t { font-size: 36px; font-weight: 700; color: var(--indigo); margin-top: 4px; }
+        #e-serp .d { font-size: 26px; color: var(--gris); margin-top: 6px; font-style: italic; }
+        #e-reste { left: 1450px; top: 740px; }
+        #e-ordre { position: absolute; left: 640px; top: 300px; width: 1180px; }
+        #e-ordre .titre.g { font-size: 60px; margin-bottom: 40px; }
+        .e-etape { display: flex; align-items: center; gap: 30px; background: #fff; border-radius: 24px; padding: 34px 40px; box-shadow: 0 18px 50px rgba(32, 26, 100, 0.12); }
+        .e-etape .titre { font-size: 44px; }
+        #e-entre { width: 8px; height: 60px; margin: 10px 0 10px 68px; border-radius: 4px; background: var(--orange); transform-origin: 50% 0; }
+      </style>
+      <div id="root" data-composition-id="robots" data-width="1920" data-height="1080">
+        <div id="e-alerte">
+          <svg width="86" height="78" viewBox="0 0 86 78"><path d="M43 4 L82 72 H4 Z" fill="#ffb400" stroke="#ffb400" stroke-width="6" stroke-linejoin="round" /><rect x="39" y="26" width="8" height="26" rx="4" fill="#201a64" /><circle cx="43" cy="62" r="5" fill="#201a64" /></svg>
+          <span class="titre">L'erreur la plus courante</span>
+        </div>
+        <div id="e-a">
+          <div id="e-fichier">
+            <div class="nom">robots.txt</div>
+            <div class="ligne mono">User-agent: *</div>
+            <div class="ligne mono"><span id="e-disallow">Disallow: /ancienne-gamme/</span></div>
+          </div>
+          <div id="e-porte"><div class="plaque">Disallow</div><div class="poignee"></div></div>
+          <svg id="e-robot" viewBox="0 0 260 300">
+            <line x1="130" y1="10" x2="130" y2="52" stroke="#201a64" stroke-width="8" stroke-linecap="round" />
+            <circle cx="130" cy="14" r="14" fill="#ffb400" />
+            <rect x="40" y="50" width="180" height="130" rx="40" fill="#31249f" />
+            <rect x="66" y="82" width="128" height="66" rx="30" fill="#201a64" />
+            <circle cx="104" cy="115" r="14" fill="#ffb400" />
+            <circle cx="156" cy="115" r="14" fill="#ffb400" />
+            <rect x="70" y="190" width="120" height="80" rx="24" fill="#31249f" />
+            <rect x="96" y="208" width="68" height="14" rx="7" fill="#9a8ff0" />
+            <circle cx="96" cy="286" r="14" fill="#201a64" />
+            <circle cx="164" cy="286" r="14" fill="#201a64" />
+          </svg>
+          <div id="e-tags"><span class="badge b" id="e-t1">noindex</span><span class="badge b" id="e-t2">410</span></div>
+          <div class="badge i" id="e-nonlus">Jamais lus</div>
+          <div class="carte" id="e-serp">
+            <div class="u">monsite.fr › ancienne-gamme</div>
+            <div class="t">monsite.fr/ancienne-gamme</div>
+            <div class="d">Aucune information n'est disponible pour cette page.</div>
+          </div>
+          <div class="badge o" id="e-reste">Toujours dans les résultats</div>
+        </div>
+        <div id="e-ordre">
+          <div class="titre g" id="e-ordre-titre">Le bon ordre</div>
+          <div class="e-etape" id="e-s1"><span class="num">1</span><span class="titre">Laisser Google constater la désindexation</span></div>
+          <div id="e-entre"></div>
+          <div class="e-etape" id="e-s2"><span class="num">2</span><span class="titre">Ensuite, si besoin, bloquer l'accès</span></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const T = (v) => v + 2.64 - 84.4;
+          const tl = gsap.timeline({ paused: true });
+          const rise = (s, t) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t);
+          // « Maintenant, l'erreur la plus courante »
+          tl.fromTo("#e-alerte", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)", transformOrigin: "0% 50%" }, 0.15);
+          // « Bloquer les pages dans le fichier robots.txt »
+          rise("#e-fichier", T(83.7));
+          tl.fromTo("#e-disallow", { backgroundColor: "rgba(255,180,0,0)" }, { backgroundColor: "rgba(255,180,0,0.22)", duration: 0.4 }, T(85.5));
+          // « Ce fichier interdit à Google de visiter une page »
+          rise("#e-porte", T(87.3));
+          tl.fromTo("#e-robot", { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }, T(87.6));
+          tl.to("#e-robot", { x: -50, duration: 0.25, ease: "power2.in" }, T(89.2));
+          tl.to("#e-robot", { x: 0, duration: 0.4, ease: "back.out(2)" }, T(89.45));
+          // « Il ne lui interdit pas de l'afficher »
+          rise("#e-serp", T(90.4));
+          // « Google ne lit plus votre noindex ni votre 410 »
+          tl.fromTo("#e-t1", { opacity: 0, y: 20 }, { opacity: 0.45, y: 0, duration: 0.4 }, T(94.4));
+          tl.fromTo("#e-t2", { opacity: 0, y: 20 }, { opacity: 0.45, y: 0, duration: 0.4 }, T(95.7));
+          tl.fromTo("#e-nonlus", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, T(96.0));
+          // « et la page reste dans les résultats »
+          tl.fromTo("#e-reste", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, T(97.8));
+          // « Le bon ordre »
+          tl.to(["#e-a", "#e-alerte"], { opacity: 0, duration: 0.4 }, T(98.8));
+          rise("#e-ordre-titre", T(99.1));
+          rise("#e-s1", T(100.3));
+          tl.fromTo("#e-entre", { scaleY: 0 }, { scaleY: 1, duration: 0.4 }, T(102.6));
+          rise("#e-s2", T(103.0));
+          window.__timelines["robots"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

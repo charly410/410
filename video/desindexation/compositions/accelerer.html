@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; }
+        #f-a, #f-b { position: absolute; inset: 0; }
+        #f-titre { position: absolute; left: 620px; top: 160px; font-size: 60px; }
+        #f-u1 { left: 1180px; top: 168px; }
+        #f-u2 { left: 1530px; top: 168px; }
+        #f-gsc { left: 640px; top: 300px; width: 780px; height: 470px; overflow: hidden; }
+        #f-gsc .tete { height: 84px; background: var(--indigo); display: flex; align-items: center; padding: 0 32px; color: #fff; font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 30px; gap: 16px; }
+        #f-gsc .tete span { color: #c9c4f5; font-weight: 600; font-family: "Inter", sans-serif; font-size: 24px; }
+        #f-gsc .corps { padding: 30px 32px; }
+        #f-bouton { display: inline-block; padding: 14px 26px; border-radius: 12px; background: var(--orange); color: var(--profond); font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 26px; }
+        #f-ligne { margin-top: 34px; display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; border-radius: 14px; background: var(--ghost); }
+        #f-ligne .u { font-size: 26px; font-weight: 600; color: var(--texte); }
+        .f-etat { padding: 8px 18px; border-radius: 999px; font-weight: 800; font-size: 22px; font-family: "Montserrat", sans-serif; }
+        #f-masque { background: var(--indigo); color: #fff; }
+        #f-visible { background: var(--orange); color: var(--profond); position: absolute; right: 56px; opacity: 0; }
+        #f-delai { position: absolute; left: 640px; top: 800px; font-size: 30px; color: var(--texte); }
+        #f-anneau { position: absolute; left: 1480px; top: 300px; width: 340px; height: 340px; }
+        #f-mois { position: absolute; left: 1480px; top: 405px; width: 340px; text-align: center; }
+        #f-mois .titre { font-size: 64px; }
+        #f-mois .sous { font-size: 28px; }
+        #f-nuance { left: 640px; top: 870px; }
+        #f-revient { left: 1480px; top: 680px; }
+        #f-sitemap { position: absolute; left: 640px; top: 300px; width: 580px; background: var(--profond); border-radius: 20px; padding: 26px 32px; box-shadow: 0 18px 50px rgba(32, 26, 100, 0.25); }
+        #f-sitemap .nom { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 28px; color: #fff; margin-bottom: 14px; }
+        #f-sitemap .ligne { position: relative; font-size: 23px; color: #c9c4f5; line-height: 1.8; white-space: nowrap; }
+        #f-sitemap .raye { position: absolute; left: 0; top: 50%; height: 5px; width: 100%; border-radius: 3px; background: var(--orange); transform-origin: 0 50%; }
+        #f-bing { left: 1260px; top: 300px; width: 580px; height: 470px; padding: 36px 40px; }
+        #f-bing .titre { font-size: 40px; }
+        #f-bing .sous { font-size: 28px; margin-top: 10px; }
+        #f-sig { display: flex; gap: 12px; margin-top: 34px; }
+        #f-sig .badge { position: relative; font-size: 26px; }
+        #f-bloquer { position: absolute; left: 40px; bottom: 40px; padding: 14px 26px; border-radius: 12px; background: var(--indigo); color: #fff; font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 26px; }
+      </style>
+      <div id="root" data-composition-id="accelerer" data-width="1920" data-height="1080">
+        <div id="f-a">
+          <div class="titre" id="f-titre">En cas d'urgence</div>
+          <div class="badge o" id="f-u1">Fuite de données</div>
+          <div class="badge o" id="f-u2">Piratage</div>
+          <div class="carte" id="f-gsc">
+            <div class="tete">Search Console <span>Suppressions</span></div>
+            <div class="corps">
+              <div id="f-bouton">Nouvelle demande</div>
+              <div id="f-ligne">
+                <span class="u">monsite.fr/donnees-clients.pdf</span>
+                <span class="f-etat" id="f-masque">Masqué</span>
+                <span class="f-etat" id="f-visible">Visible</span>
+              </div>
+            </div>
+          </div>
+          <div class="sous" id="f-delai">Résultat masqué en quelques heures</div>
+          <svg id="f-anneau" viewBox="0 0 340 340">
+            <circle cx="170" cy="170" r="150" fill="none" stroke="#e3e0ee" stroke-width="22" />
+            <circle id="f-arc" cx="170" cy="170" r="150" fill="none" stroke="#31249f" stroke-width="22" stroke-linecap="round" stroke-dasharray="942.5" stroke-dashoffset="0" transform="rotate(-90 170 170)" />
+          </svg>
+          <div id="f-mois"><div class="titre">6 mois</div><div class="sous">environ</div></div>
+          <div class="badge i" id="f-nuance">Masquer n'est pas désindexer</div>
+          <div class="badge o" id="f-revient">Sans signal, elle revient</div>
+        </div>
+        <div id="f-b">
+          <div id="f-sitemap">
+            <div class="nom">sitemap.xml</div>
+            <div class="ligne mono">&lt;loc&gt;monsite.fr/&lt;/loc&gt;</div>
+            <div class="ligne mono">&lt;loc&gt;monsite.fr/catalogue&lt;/loc&gt;</div>
+            <div class="ligne mono">&lt;loc&gt;monsite.fr/catalogue-2019&lt;/loc&gt;<div class="raye" id="f-r1"></div></div>
+            <div class="ligne mono">&lt;loc&gt;monsite.fr/contact&lt;/loc&gt;</div>
+            <div class="ligne mono">&lt;loc&gt;preprod.monsite.fr/&lt;/loc&gt;<div class="raye" id="f-r2"></div></div>
+          </div>
+          <div class="carte" id="f-bing">
+            <div class="titre">Et Bing ?</div>
+            <div class="sous">Bing Webmaster Tools</div>
+            <div id="f-sig"><span class="badge b">410</span><span class="badge b">301</span><span class="badge b">noindex</span></div>
+            <div class="sous" id="f-memes">Les mêmes signaux</div>
+            <div id="f-bloquer">Bloquer des URL</div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const T = (v) => v + 2.64 - 108.4;
+          const tl = gsap.timeline({ paused: true });
+          const rise = (s, t) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t);
+          const pop = (s, t) => tl.fromTo(s, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, t);
+          // « Et en cas d'urgence ? Une fuite de données ? Un piratage ? »
+          rise("#f-titre", 0.1);
+          pop("#f-u1", T(107.1));
+          pop("#f-u2", T(108.1));
+          // « L'outil de suppression de la Search Console masque le résultat en quelques heures »
+          rise("#f-gsc", T(109.2));
+          pop("#f-bouton", T(109.8));
+          tl.fromTo("#f-ligne", { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(111.0));
+          tl.fromTo("#f-masque", { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(111.5));
+          rise("#f-delai", T(112.2));
+          // « Mais il ne fait que masquer, pour environ 6 mois »
+          pop("#f-nuance", T(114.3));
+          tl.fromTo(["#f-anneau", "#f-mois"], { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, T(115.0));
+          // « Si le signal n'est pas en place d'ici là, elle revient »
+          tl.fromTo("#f-arc", { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": 942.5 }, duration: 2.8, ease: "power1.inOut" }, T(116.6));
+          tl.to("#f-masque", { opacity: 0, duration: 0.2 }, T(119.4));
+          tl.to("#f-visible", { opacity: 1, duration: 0.2 }, T(119.4));
+          pop("#f-revient", T(119.5));
+          // « Pensez aussi à retirer ces adresses de votre sitemap »
+          tl.to("#f-a", { opacity: 0, duration: 0.4 }, T(120.6));
+          rise("#f-sitemap", T(121.0));
+          tl.fromTo("#f-r1", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.out" }, T(121.8));
+          tl.fromTo("#f-r2", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.out" }, T(122.4));
+          // « Et n'oubliez pas Bing : il lit les mêmes signaux, et propose son propre outil de blocage »
+          rise("#f-bing", T(124.1));
+          tl.fromTo("#f-sig .badge", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.15 }, T(125.6));
+          rise("#f-memes", T(126.0));
+          pop("#f-bloquer", T(128.3));
+          window.__timelines["accelerer"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; }
+        #p-titre { position: absolute; left: 620px; top: 160px; width: 1100px; font-size: 50px; }
+        #p-schema { position: absolute; left: 600px; top: 290px; width: 1260px; height: 620px; }
+        #p-page { left: 140px; top: 20px; width: 320px; height: 400px; padding: 34px 30px; }
+        #p-page .l { height: 16px; border-radius: 8px; background: var(--ligne); margin-bottom: 18px; }
+        #p-page .url { font-size: 22px; font-weight: 700; color: var(--indigo); margin-bottom: 26px; }
+        #p-tag { left: 330px; top: -6px; transform-origin: 50% 50%; }
+        #p-robot { position: absolute; left: 860px; top: 70px; width: 260px; }
+        #p-robot-nom { left: 880px; top: 380px; }
+        #p-faisceau { position: absolute; left: 470px; top: 170px; width: 400px; height: 110px; background: linear-gradient(90deg, rgba(255, 180, 0, 0.35), rgba(255, 180, 0, 0)); clip-path: polygon(0 0, 100% 40%, 100% 60%, 0 100%); transform-origin: 100% 50%; }
+        #p-index { position: absolute; left: 60px; top: 470px; width: 1140px; height: 130px; border-radius: 20px; background: var(--pale); display: flex; align-items: center; gap: 22px; padding: 0 30px; }
+        #p-index .f { width: 130px; height: 84px; border-radius: 12px; background: #fff; box-shadow: 0 6px 16px rgba(32, 26, 100, 0.1); }
+        #p-index .f.cible { outline: 5px solid var(--orange); }
+        #p-index-nom { left: 70px; top: 430px; font-size: 24px; }
+        #p-conditions { position: absolute; left: 640px; top: 360px; width: 1180px; }
+        .p-cond { display: flex; align-items: center; gap: 30px; background: #fff; border-radius: 24px; padding: 34px 40px; margin-bottom: 34px; box-shadow: 0 18px 50px rgba(32, 26, 100, 0.12); }
+        .p-cond .titre { font-size: 50px; }
+      </style>
+      <div id="root" data-composition-id="principe" data-width="1920" data-height="1080">
+        <div class="titre" id="p-titre">Google ne retire pas une page sur demande.</div>
+        <div class="titre" id="p-titre2" style="position: absolute; left: 620px; top: 150px; width: 1200px; font-size: 54px">Deux conditions.</div>
+        <div id="p-schema">
+          <div class="carte" id="p-page">
+            <div class="url">monsite.fr/catalogue-2019</div>
+            <div class="l" style="width: 90%"></div>
+            <div class="l" style="width: 70%"></div>
+            <div class="l" style="width: 82%"></div>
+            <div class="l" style="width: 60%"></div>
+            <div class="l" style="width: 76%"></div>
+          </div>
+          <div class="badge o" id="p-tag">410</div>
+          <div id="p-faisceau"></div>
+          <svg id="p-robot" viewBox="0 0 260 300">
+            <line x1="130" y1="10" x2="130" y2="52" stroke="#201a64" stroke-width="8" stroke-linecap="round" />
+            <circle cx="130" cy="14" r="14" fill="#ffb400" />
+            <rect x="40" y="50" width="180" height="130" rx="40" fill="#31249f" />
+            <rect x="66" y="82" width="128" height="66" rx="30" fill="#201a64" />
+            <circle cx="104" cy="115" r="14" fill="#ffb400" />
+            <circle cx="156" cy="115" r="14" fill="#ffb400" />
+            <rect x="70" y="190" width="120" height="80" rx="24" fill="#31249f" />
+            <rect x="96" y="208" width="68" height="14" rx="7" fill="#9a8ff0" />
+            <circle cx="96" cy="286" r="14" fill="#201a64" />
+            <circle cx="164" cy="286" r="14" fill="#201a64" />
+          </svg>
+          <div class="badge i" id="p-robot-nom">Googlebot</div>
+          <div class="sous" id="p-index-nom" style="position: absolute">Index de Google</div>
+          <div id="p-index">
+            <div class="f"></div><div class="f"></div><div class="f cible" id="p-cible"></div><div class="f"></div><div class="f"></div><div class="f"></div><div class="f"></div>
+          </div>
+        </div>
+        <div id="p-conditions">
+          <div class="p-cond" id="p-c1"><span class="num">1</span><span class="titre">Envoyer le bon signal</span></div>
+          <div class="p-cond" id="p-c2"><span class="num">2</span><span class="titre">Laisser Google venir le lire</span></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          // temps de la voix vers temps local de la scène (début à 17,6 s, voix décalée de 2,64 s)
+          const T = (v) => v + 2.64 - 17.6;
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#p-titre", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.1);
+          tl.fromTo("#p-page", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.4);
+          tl.fromTo("#p-index", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.7);
+          tl.fromTo("#p-index-nom", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.9);
+          // « il la retire quand il revient la visiter »
+          tl.fromTo("#p-robot", { opacity: 0, x: 260 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, T(18.86));
+          tl.fromTo("#p-robot-nom", { opacity: 0, x: 260 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, T(18.86));
+          // « et qu'il y trouve un signal clair »
+          tl.fromTo("#p-tag", { opacity: 0, scale: 2.2, rotation: -20 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.45, ease: "back.out(1.6)" }, T(20.9));
+          tl.fromTo("#p-faisceau", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.5, ease: "power2.out" }, T(21.3));
+          tl.to("#p-cible", { y: 120, opacity: 0, duration: 0.6, ease: "power2.in" }, T(21.74));
+          // « Tout tient donc en deux conditions »
+          tl.to("#p-schema", { opacity: 0, y: -20, duration: 0.4 }, T(22.5));
+          tl.to("#p-titre", { opacity: 0, duration: 0.3 }, T(22.5));
+          tl.fromTo("#p-titre2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, T(22.7));
+          tl.fromTo("#p-c1", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, T(24.9));
+          tl.fromTo("#p-c2", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, T(26.5));
+          window.__timelines["principe"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

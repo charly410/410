@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; }
+        #b-q { position: absolute; left: 620px; top: 140px; font-size: 30px; }
+        #b-titre { position: absolute; left: 620px; top: 186px; font-size: 60px; }
+        .b-page { width: 360px; height: 240px; padding: 30px 32px; }
+        .b-page .t { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 34px; color: var(--profond); }
+        .b-page .u { font-size: 22px; color: var(--gris); margin-top: 6px; font-weight: 600; }
+        .b-page .l { height: 14px; border-radius: 7px; background: var(--ligne); margin-top: 18px; }
+        #b-vieux { left: 640px; top: 360px; }
+        #b-neuf { left: 1460px; top: 360px; }
+        #b-accueil { left: 1460px; top: 700px; }
+        #b-fleche { position: absolute; left: 1010px; top: 470px; width: 440px; height: 20px; }
+        #b-fleche .tige { position: absolute; left: 0; top: 6px; height: 8px; width: 420px; border-radius: 4px; background: var(--indigo); transform-origin: 0 50%; }
+        #b-fleche .pointe { position: absolute; right: 0; top: -8px; width: 0; height: 0; border-left: 30px solid var(--indigo); border-top: 18px solid transparent; border-bottom: 18px solid transparent; }
+        #b-301 { left: 1160px; top: 395px; }
+        #b-fausse { position: absolute; left: 980px; top: 610px; width: 500px; height: 230px; }
+        #b-croix { position: absolute; left: 1160px; top: 650px; width: 110px; height: 110px; }
+        #b-note { left: 1290px; top: 960px; }
+      </style>
+      <div id="root" data-composition-id="signal-301" data-width="1920" data-height="1080">
+        <div class="sous" id="b-q">Que devient la page ?</div>
+        <div class="titre" id="b-titre">Remplacée par une autre</div>
+        <div class="carte b-page" id="b-vieux"><div class="t">Catalogue 2019</div><div class="u">monsite.fr/catalogue-2019</div><div class="l" style="width: 80%"></div><div class="l" style="width: 60%"></div></div>
+        <div class="carte b-page" id="b-neuf"><div class="t">Catalogue 2026</div><div class="u">monsite.fr/catalogue</div><div class="l" style="width: 80%"></div><div class="l" style="width: 66%"></div></div>
+        <div class="carte b-page" id="b-accueil"><div class="t">Accueil</div><div class="u">monsite.fr</div><div class="l" style="width: 74%"></div><div class="l" style="width: 52%"></div></div>
+        <div id="b-fleche"><div class="tige"></div><div class="pointe"></div></div>
+        <div class="badge o" id="b-301">301</div>
+        <svg id="b-fausse" viewBox="0 0 500 230"><path d="M10 10 C 200 20 380 80 470 210" fill="none" stroke="#929cbf" stroke-width="8" stroke-dasharray="18 14" stroke-linecap="round" /></svg>
+        <svg id="b-croix" viewBox="0 0 110 110"><circle cx="55" cy="55" r="52" fill="#ffb400" /><path d="M35 35 L75 75 M75 35 L35 75" stroke="#201a64" stroke-width="12" stroke-linecap="round" /></svg>
+        <div class="badge b" id="b-note">Vu comme une page introuvable</div>
+      </div>
+      <script>
+        (function () {
+          const T = (v) => v + 2.64 - 49.95;
+          const tl = gsap.timeline({ paused: true });
+          const rise = (s, t) => tl.fromTo(s, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t);
+          rise("#b-q", 0.05);
+          rise("#b-titre", 0.2);
+          rise("#b-vieux", 0.5);
+          // « Redirigez-la en 301, vers cette page précise »
+          tl.fromTo("#b-fleche .tige", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, T(49.42));
+          tl.fromTo("#b-fleche .pointe", { opacity: 0 }, { opacity: 1, duration: 0.2 }, T(49.42) + 0.5);
+          tl.fromTo("#b-301", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, T(50.4));
+          rise("#b-neuf", T(51.2));
+          // « pas vers l'accueil »
+          rise("#b-accueil", T(52.6));
+          tl.fromTo("#b-fausse", { opacity: 0 }, { opacity: 1, duration: 0.4 }, T(52.7));
+          tl.fromTo("#b-croix", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, T(53.1));
+          // « Google traite ces redirections fourre-tout comme des pages introuvables »
+          rise("#b-note", T(55.6));
+          window.__timelines["signal-301"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

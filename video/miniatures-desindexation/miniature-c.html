@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Miniature C : résultat qui reste</title>
+<!--
+  Variante C : un résultat de recherche qui refuse de disparaître (tension).
+  Hypothèse : le spectateur se reconnaît dans son problème (« j'ai supprimé la page,
+  elle est toujours là ») plus vite que dans une solution.
+  Trois éléments : la question « Toujours là ? », le résultat de recherche, le surlignage orange.
+  Fond clair, à l'inverse de A et B, pour tester aussi le contraste dans le fil YouTube.
+-->
+<style>
+@font-face { font-family: 'Montserrat'; src: url('../desindexation/assets/montserrat-variable.woff') format('woff'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('../desindexation/assets/inter-variable.woff') format('woff'); font-weight: 100 900; }
+:root { --indigo: #31249F; --indigo-profond: #201A64; --orange: #FFB400; --ghost: #F7F5FA; --gris: #929CBF; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse 900px 600px at 640px 460px, #FFFFFF 0%, var(--ghost) 55%, #E6E2F1 100%); }
+.abs { position: absolute; }
+
+/* 1. La question, en haut */
+#mot { left: 0; width: 1280px; top: 36px; text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 800;
+  font-size: 158px; line-height: 1; letter-spacing: -0.035em; color: var(--indigo-profond); white-space: nowrap; }
+#mot .q { color: var(--indigo); }
+
+/* 2. Le résultat de recherche, décalé à gauche pour laisser libre le bas droit */
+#carte { left: 40px; top: 250px; width: 900px; padding: 36px 48px 42px; border-radius: 26px; background: #fff;
+  transform: rotate(-2deg); box-shadow: 0 30px 70px rgba(32,26,100,.22), 0 0 0 1px rgba(32,26,100,.08); }
+.src { display: flex; align-items: center; gap: 16px; }
+.fav { width: 54px; height: 54px; border-radius: 50%; background: #E9E6F3; display: grid; place-items: center;
+  font: 700 22px 'Inter'; color: var(--indigo); }
+.dom { font-size: 30px; font-weight: 600; color: #2C2940; line-height: 1.2; }
+.dom small { display: block; font-size: 24px; color: #6E6B85; font-weight: 500; }
+/* 3. Le surlignage orange sur le titre, comme dans l'accroche de la vidéo */
+.ttl { position: relative; display: inline-block; margin-top: 22px; font-size: 76px; font-weight: 700; color: var(--indigo);
+  line-height: 1.15; letter-spacing: -0.01em; }
+.ttl::before { content: ''; position: absolute; left: -14px; right: -14px; top: 4px; bottom: -2px;
+  background: var(--orange); opacity: .55; border-radius: 8px; z-index: -1; transform: rotate(-.6deg); }
+.ttl span { position: relative; }
+.desc { margin-top: 20px; font-size: 30px; color: #5E5B75; line-height: 1.35; }
+</style>
+</head>
+<body>
+  <div class="abs" id="mot">Toujours là<span class="q">&#8239;?</span></div>
+
+  <div class="abs" id="carte">
+    <div class="src"><div class="fav">V</div><div class="dom">votresite.fr<small>https://votresite.fr › catalogue-2019</small></div></div>
+    <div class="ttl"><span>Catalogue 2019</span></div>
+    <div class="desc">Aucune information n’est disponible pour cette page.</div>
+  </div>
+</body>
+</html>
