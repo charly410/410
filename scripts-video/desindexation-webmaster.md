@@ -69,7 +69,7 @@
 **VISUEL :** carte « mot de passe ». Un cadenas se ferme sur la préproduction.
 
 **VOIX OFF :**
-> Une préproduction, un espace client, des documents internes ? Le noindex ne suffit pas : la page reste lisible par n'importe qui qui a le lien. Protégez-la par un mot de passe.
+> Une préproduction, un espace client, des documents internes ? Le noindex ne suffit pas : la page reste lisible par toute personne qui a le lien. Protégez-la par un mot de passe.
 
 ---
 
