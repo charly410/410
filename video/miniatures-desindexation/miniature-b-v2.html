@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Miniature B v2 : le tampon 410</title>
+<!--
+  Variante B v2 : le code a maintenant un contexte. Un tampon « 410 » écrase une page,
+  et « 404 » est barré à côté : le bon et le mauvais choix se lisent sans connaître les codes HTTP.
+  Trois éléments : la page, le tampon, le texte « pas 404 ».
+-->
+<style>
+@font-face { font-family: 'Montserrat'; src: url('../desindexation/assets/montserrat-variable.woff') format('woff'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('../desindexation/assets/inter-variable.woff') format('woff'); font-weight: 100 900; }
+:root { --indigo: #31249F; --profond: #201A64; --orange: #FFB400; --ligne: #E3E0EE; --gris: #5D6378; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse 700px 600px at 380px 360px, #3A2DB8 0%, var(--indigo) 40%, var(--profond) 100%); }
+.abs { position: absolute; }
+
+/* 1. La page, inclinée, avec de la profondeur */
+#page { left: 80px; top: 60px; width: 470px; height: 610px; background: #fff; border-radius: 24px;
+  transform: rotate(-6deg); box-shadow: 0 40px 80px rgba(10, 6, 50, .55); padding: 40px 38px; opacity: .97; }
+#page .u { font-size: 26px; font-weight: 700; color: var(--gris); }
+#page .t { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 44px; color: var(--profond); margin: 10px 0 28px; }
+#page .l { height: 18px; border-radius: 9px; background: var(--ligne); margin-bottom: 22px; }
+
+/* 2. Le tampon 410, qui déborde de la page */
+#tampon { left: 150px; top: 230px; padding: 6px 36px 16px; border: 18px solid var(--orange); border-radius: 30px;
+  transform: rotate(-16deg); background: rgba(32, 26, 100, .9);
+  font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 210px; line-height: 1; letter-spacing: -0.04em;
+  color: var(--orange); box-shadow: 0 30px 60px rgba(10, 6, 50, .5); }
+
+/* 3. Le texte : « 404 » barré, en haut à droite (le bas droit est réservé à la durée YouTube) */
+#texte { left: 720px; top: 120px; width: 520px; font-family: 'Montserrat', sans-serif; font-weight: 800; color: #fff;
+  letter-spacing: -0.035em; line-height: .95; }
+#texte .pas { font-size: 130px; }
+#texte .code { position: relative; display: inline-block; font-size: 230px; color: #fff; }
+#texte .code::after { content: ''; position: absolute; left: -14px; right: -14px; top: 50%; height: 30px; border-radius: 15px;
+  background: var(--orange); transform: rotate(-12deg); }
+</style>
+</head>
+<body>
+  <div class="abs" id="page">
+    <div class="u">monsite.fr › catalogue-2019</div>
+    <div class="t">Catalogue 2019</div>
+    <div class="l" style="width: 92%"></div>
+    <div class="l" style="width: 74%"></div>
+    <div class="l" style="width: 86%"></div>
+    <div class="l" style="width: 60%"></div>
+    <div class="l" style="width: 80%"></div>
+    <div class="l" style="width: 68%"></div>
+  </div>
+  <div class="abs" id="tampon">410</div>
+  <div class="abs" id="texte"><div class="pas">Pas</div><div class="code">404</div></div>
+</body>
+</html>

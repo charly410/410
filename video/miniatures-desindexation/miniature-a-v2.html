@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Miniature A v2 : la page éjectée</title>
+<!--
+  Variante A v2 : le bénéfice montré, pas écrit. Un résultat de recherche est éjecté de la liste,
+  le présentateur le regarde partir, satisfait. Texte : « Dehors ! », qui complète le titre
+  « Retirer une page de Google : la bonne méthode » au lieu de le répéter.
+  Trois éléments : la liste de résultats avec la ligne éjectée, le présentateur, le mot.
+-->
+<style>
+@font-face { font-family: 'Montserrat'; src: url('../desindexation/assets/montserrat-variable.woff') format('woff'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('../desindexation/assets/inter-variable.woff') format('woff'); font-weight: 100 900; }
+:root { --indigo: #31249F; --profond: #201A64; --orange: #FFB400; --ghost: #F7F5FA; --ligne: #E3E0EE; --gris: #5D6378; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse 760px 620px at 420px 420px, #3A2DB8 0%, var(--indigo) 38%, var(--profond) 100%); }
+.abs { position: absolute; }
+
+/* 1. La liste de résultats, inclinée, avec de la profondeur */
+#serp { left: 40px; top: 200px; width: 640px; height: 470px; background: #fff; border-radius: 26px;
+  transform: rotate(-4deg); box-shadow: 0 40px 80px rgba(10, 6, 50, .55); padding: 34px 36px; }
+#serp .barre { height: 58px; border-radius: 29px; border: 3px solid var(--ligne); margin-bottom: 30px; }
+.res { height: 92px; border-radius: 14px; padding: 16px 20px; margin-bottom: 20px; }
+.res .u { width: 40%; height: 14px; border-radius: 7px; background: var(--ligne); }
+.res .t { width: 75%; height: 24px; border-radius: 12px; background: #B9B3E6; margin-top: 14px; }
+#trou { border: 4px dashed #C9C4F5; background: #F4F2FC; }
+
+/* La ligne éjectée : grosse, cerclée d'orange, en vol hors de la liste */
+#ejecte { left: 430px; top: 330px; width: 520px; height: 128px; border-radius: 20px; background: #fff;
+  border: 7px solid var(--orange); transform: rotate(14deg); box-shadow: 0 30px 60px rgba(10, 6, 50, .55);
+  padding: 18px 26px; }
+#ejecte .u { font-size: 24px; font-weight: 700; color: var(--gris); }
+#ejecte .t { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 46px; color: var(--profond); line-height: 1.1; }
+
+/* 2. Le présentateur, à droite, regard vers la ligne éjectée */
+#presentateur { left: 860px; top: 205px; width: 480px; height: 562px; }
+#presentateur svg, #presentateur img { width: 100%; height: 100%; display: block; }
+
+/* 3. Le mot, en haut à gauche, très gros */
+#mot { left: 52px; top: 26px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 168px;
+  line-height: 1; letter-spacing: -0.04em; color: var(--orange); text-shadow: 0 10px 30px rgba(10, 6, 50, .5); }
+</style>
+</head>
+<body>
+  <div class="abs" id="serp">
+    <div class="barre"></div>
+    <div class="res"><div class="u"></div><div class="t"></div></div>
+    <div class="res" id="trou"></div>
+    <div class="res"><div class="u"></div><div class="t" style="width: 62%"></div></div>
+  </div>
+  <div class="abs" id="ejecte">
+    <div class="u">monsite.fr › catalogue-2019</div>
+    <div class="t">Catalogue 2019</div>
+  </div>
+  <div class="abs" id="presentateur"></div>
+  <div class="abs" id="mot">Dehors !</div>
+
+<script>
+// Expression : bouche grande ouverte (satisfaction), sourcils relevés, regard vers la gauche.
+const cible = document.getElementById('presentateur');
+const src = '../desindexation/assets/presentateur.svg';
+window.ready = fetch(src).then(r => r.text()).then(txt => {
+  cible.innerHTML = txt;
+  const svg = cible.querySelector('svg');
+  svg.removeAttribute('width'); svg.removeAttribute('height');
+  svg.querySelector('#pr-b0').setAttribute('opacity', '0');
+  svg.querySelector('#pr-b3').setAttribute('opacity', '1');
+  svg.querySelector('#pr-sourcils').setAttribute('transform', 'translate(0 -12)');
+  for (const id of ['pr-oeil-g', 'pr-oeil-d']) {
+    svg.querySelectorAll('#' + id + ' circle').forEach(c => c.setAttribute('cx', +c.getAttribute('cx') - 5));
+  }
+}).catch(() => { cible.innerHTML = '<img src="' + src + '" alt="">'; });
+</script>
+</body>
+</html>

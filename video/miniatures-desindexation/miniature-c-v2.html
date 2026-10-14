@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Miniature C v2 : toujours dans Google</title>
+<!--
+  Variante C v2 : le problème se voit sans lire. Une corbeille dit « supprimée »,
+  le résultat entouré dit « pourtant toujours dans Google ».
+  Fond indigo profond pour ressortir aussi en mode clair de YouTube.
+  Trois éléments : la question, le résultat entouré, la corbeille.
+-->
+<style>
+@font-face { font-family: 'Montserrat'; src: url('../desindexation/assets/montserrat-variable.woff') format('woff'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('../desindexation/assets/inter-variable.woff') format('woff'); font-weight: 100 900; }
+:root { --indigo: #31249F; --profond: #201A64; --orange: #FFB400; --ligne: #E3E0EE; --gris: #5D6378; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1280px; height: 720px; overflow: hidden; }
+body { position: relative; font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse 800px 560px at 560px 470px, #2E2390 0%, var(--profond) 75%); }
+.abs { position: absolute; }
+
+/* 1. La question */
+#question { left: 50px; top: 24px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 150px;
+  line-height: 1; letter-spacing: -0.04em; color: #fff; }
+#question span { color: var(--orange); }
+
+/* 2. Le résultat, très grand, entouré d'un trait orange façon feutre */
+#resultat { left: 60px; top: 260px; width: 820px; height: 330px; background: #fff; border-radius: 26px;
+  box-shadow: 0 40px 80px rgba(5, 3, 30, .6); padding: 36px 44px; transform: rotate(-2deg); }
+#resultat .u { font-size: 30px; font-weight: 700; color: var(--gris); }
+#resultat .t { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 86px; line-height: 1.05; color: var(--profond); margin-top: 10px; }
+#resultat .l { height: 20px; border-radius: 10px; background: var(--ligne); margin-top: 26px; }
+#cercle { left: 20px; top: 214px; width: 920px; height: 440px; }
+
+/* 3. La corbeille, déjà cochée : la page a bien été supprimée */
+#corbeille { left: 930px; top: 210px; width: 290px; height: 340px; }
+</style>
+</head>
+<body>
+  <div class="abs" id="question">Toujours là <span>?</span></div>
+  <div class="abs" id="resultat">
+    <div class="u">monsite.fr › catalogue-2019</div>
+    <div class="t">Catalogue 2019</div>
+    <div class="l" style="width: 88%"></div>
+    <div class="l" style="width: 62%"></div>
+  </div>
+  <svg class="abs" id="cercle" viewBox="0 0 920 440">
+    <path d="M110 40 C 330 -4 760 0 880 50 C 940 140 930 340 850 395 C 620 440 160 436 50 370 C 0 300 4 120 140 30"
+      fill="none" stroke="#FFB400" stroke-width="16" stroke-linecap="round" />
+  </svg>
+  <svg class="abs" id="corbeille" viewBox="0 0 290 340">
+    <rect x="40" y="70" width="210" height="26" rx="13" fill="#FFFFFF" />
+    <rect x="110" y="40" width="70" height="36" rx="12" fill="none" stroke="#FFFFFF" stroke-width="14" />
+    <path d="M60 110 H230 L212 320 H78 Z" fill="#FFFFFF" />
+    <rect x="102" y="140" width="14" height="150" rx="7" fill="#C9C4F5" />
+    <rect x="138" y="140" width="14" height="150" rx="7" fill="#C9C4F5" />
+    <rect x="174" y="140" width="14" height="150" rx="7" fill="#C9C4F5" />
+    <circle cx="220" cy="270" r="62" fill="#FFB400" stroke="#201A64" stroke-width="10" />
+    <path d="M190 270 l20 20 l38 -40" fill="none" stroke="#201A64" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</body>
+</html>
