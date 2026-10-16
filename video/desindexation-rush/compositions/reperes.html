@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; pointer-events: none; }
+        .rp-chap { position: absolute; left: 60px; top: 56px; padding: 14px 28px; border-radius: 999px; background: var(--indigo); color: #fff; font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 28px; white-space: nowrap; }
+        #rp-logo { position: absolute; right: 40px; top: 16px; width: 240px; }
+      </style>
+      <div id="root" data-composition-id="reperes" data-width="1920" data-height="1080">
+        <div class="rp-chap" id="rp-c0">Le principe</div>
+        <div class="rp-chap" id="rp-c1">Choisir le bon signal</div>
+        <div class="rp-chap" id="rp-c2">Le piège du robots.txt</div>
+        <div class="rp-chap" id="rp-c3">Accélérer</div>
+        <div class="rp-chap" id="rp-c4">Vérifier</div>
+        <div class="rp-chap" id="rp-c5">En résumé</div>
+        <img id="rp-logo" src="assets/logo-410gone-couleur.svg" alt="" />
+      </div>
+      <script>
+        (function () {
+          // temps locaux : la sous-composition démarre au début de la scène « principe » (window.DEBUT, build/montage.py)
+          const D = window.DEBUT;
+          const DEBUT = D["principe"];
+          const CHAP = [D["principe"], D["signal-410"], D["robots"], D["accelerer"], D["verifier"], D["arbre"], 153.4];
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo("#rp-logo", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.1);
+          CHAP.slice(0, 6).forEach((t, i) => {
+            const a = t - DEBUT, b = CHAP[i + 1] - DEBUT;
+            tl.fromTo("#rp-c" + i, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, a + 0.1);
+            if (i < 5) tl.to("#rp-c" + i, { opacity: 0, duration: 0.2 }, b - 0.2);
+          });
+          // logo indigo illisible sur le rush en plein écran : on le masque pendant ces moments
+          const C = (v) => window.CARTE(v) - DEBUT;
+          [[44.6, 47.35], [153.4, 157.25]].forEach(([a, b]) => {
+            tl.to("#rp-logo", { opacity: 0, duration: 0.3 }, C(a));
+            tl.to("#rp-logo", { opacity: 1, duration: 0.3 }, C(b) + 0.3);
+          });
+          window.__timelines["reperes"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

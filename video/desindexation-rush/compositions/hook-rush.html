@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; pointer-events: none; }
+        #k-serp { left: 50px; top: 100px; width: 770px; height: 880px; overflow: hidden; }
+        #k-barre { position: absolute; left: 40px; top: 36px; width: 690px; height: 80px; border-radius: 40px; border: 3px solid var(--ligne); display: flex; align-items: center; padding: 0 32px; gap: 18px; }
+        #k-requete { font-size: 32px; font-weight: 600; color: var(--texte); white-space: nowrap; overflow: hidden; width: 0; }
+        .k-res { position: absolute; left: 40px; width: 690px; padding: 18px 24px 18px 30px; border-radius: 14px; }
+        .k-res .u { font-size: 22px; color: var(--gris); font-weight: 500; }
+        .k-res .t { font-size: 28px; font-weight: 700; color: var(--indigo); margin-top: 4px; }
+        .k-res .marque { position: absolute; left: 0; top: 12px; bottom: 12px; width: 8px; border-radius: 4px; background: var(--orange); }
+        .k-res .dom { color: var(--profond); font-weight: 700; border-radius: 6px; padding: 0 4px; }
+        .k-tag { position: absolute; right: 20px; top: 10px; padding: 6px 16px; border-radius: 999px; background: var(--orange); color: var(--profond); font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 20px; }
+        #k-spam { position: absolute; left: 40px; top: 600px; width: 690px; }
+        .k-sp { height: 32px; margin-bottom: 10px; border-radius: 8px; background: var(--pale); font-size: 20px; color: var(--gris); padding: 4px 14px; white-space: nowrap; overflow: hidden; }
+        #k-propre { position: absolute; left: 60px; top: 330px; width: 650px; text-align: center; }
+        #k-propre .titre { font-size: 52px; }
+        #k-coche { width: 110px; height: 110px; margin: 0 auto 26px; border-radius: 50%; background: var(--indigo); display: grid; place-items: center; }
+      </style>
+      <div id="root" data-composition-id="hook-rush" data-width="1920" data-height="1080">
+        <div class="carte" id="k-serp">
+          <div id="k-barre">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5d6378" stroke-width="2.6" stroke-linecap="round"><circle cx="10" cy="10" r="7" /><path d="M15.5 15.5L21 21" /></svg>
+            <div id="k-requete">site : monsite.fr</div>
+          </div>
+          <div class="k-res" id="k-r1" style="top: 150px"><div class="marque"></div><div class="u"><span class="dom">preprod.monsite.fr</span></div><div class="t">Accueil - Mon site (version de test)</div><span class="k-tag" id="k-t1">Préproduction</span></div>
+          <div class="k-res" id="k-r2" style="top: 300px"><div class="marque"></div><div class="u"><span class="dom">monsite.fr</span> › catalogue-2019</div><div class="t">Catalogue 2019 - Gamme arrêtée</div><span class="k-tag" id="k-t2">Gamme arrêtée</span></div>
+          <div class="k-res" id="k-r3" style="top: 450px"><div class="marque"></div><div class="u"><span class="dom">monsite.fr</span> › ?p=8f3a91</div><div class="t">Cheap replica watches - casino bonus</div><span class="k-tag" id="k-t3">Piratage</span></div>
+          <div id="k-spam">
+            <div class="k-sp" id="k-sp1">monsite.fr › ?p=8f3a92 · Cheap replica bags - best price</div>
+            <div class="k-sp" id="k-sp2">monsite.fr › ?p=8f3a93 · Casino free spins no deposit</div>
+            <div class="k-sp" id="k-sp3">monsite.fr › ?p=8f3a94 · Replica sneakers outlet online</div>
+            <div class="k-sp" id="k-sp4">monsite.fr › ?p=8f3a95 · Pharmacy cheap pills discount</div>
+            <div class="k-sp" id="k-sp5">monsite.fr › ?p=8f3a96 · Cheap replica bags - outlet</div>
+            <div class="k-sp" id="k-sp6">monsite.fr › ?p=8f3a97 · Casino bonus free spins 2026</div>
+          </div>
+          <div id="k-propre">
+            <div id="k-coche"><svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#ffb400" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div>
+            <div class="titre">Les sortir de Google, proprement.</div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          // temps du rush = temps de la timeline (le hook précède l'ouverture)
+          const tl = gsap.timeline({ paused: true });
+          const pop = (sel, t) => tl.fromTo(sel, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, t);
+          const rise = (sel, t) => tl.fromTo(sel, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, t);
+          // la carte entre pendant que le rush glisse vers la droite
+          tl.fromTo("#k-serp", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.55);
+          tl.fromTo("#k-requete", { width: 0 }, { width: 290, duration: 0.5, ease: "steps(14)" }, 0.8);
+          // « Votre préproduction dans Google »
+          rise("#k-r1", 0.9); pop("#k-t1", 1.3);
+          // « une gamme arrêtée depuis des années »
+          rise("#k-r2", 2.76); pop("#k-t2", 3.1);
+          // « ou des centaines de pages de spam après un piratage »
+          rise("#k-r3", 5.28);
+          ["#k-sp1", "#k-sp2", "#k-sp3", "#k-sp4", "#k-sp5", "#k-sp6"].forEach((s, i) => tl.fromTo(s, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.22 }, 5.6 + i * 0.13));
+          pop("#k-t3", 7.16);
+          // « elles sont sur votre site » : le domaine commun s'allume
+          tl.to(".k-res .dom", { backgroundColor: "#ffb400", duration: 0.3, stagger: 0.12 }, 9.9);
+          // « les faire sortir de Google, proprement »
+          ["#k-sp6", "#k-sp5", "#k-sp4", "#k-sp3", "#k-sp2", "#k-sp1", "#k-r3", "#k-r2", "#k-r1"].forEach((s, i) => tl.to(s, { opacity: 0, x: 70, duration: 0.25, ease: "power2.in" }, 11.86 + i * 0.07));
+          rise("#k-propre", 12.7);
+          window.__timelines["hook-rush"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

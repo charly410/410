@@ -6,6 +6,7 @@
 <!--
   Habillage réutilisable des vidéos 410 Gone, rendu image par image par render.mjs.
   ?mode=open&titre=...&sous=...  ouverture de 2,6 s, à placer juste après le hook.
+  &tenue=1                       allonge l'ouverture : secondes de plus à l'image, titre affiché.
   ?mode=fin                      écran de fin de 15 s, compatible écran de fin YouTube.
   &guides                        affiche les zones à respecter pour les éléments YouTube.
 -->
@@ -101,8 +102,9 @@ if (MODE === 'open') {
   tl.fromTo('#oRule', { scaleX: 0 }, { scaleX: 1, duration: 0.45 }, 0.55);
   tl.fromTo('#oTitre', { opacity: 0, y: 40 }, { opacity: 1, y: 0 }, 0.65);
   tl.fromTo('#oSous', { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, 0.8);
-  tl.to('#open', { clipPath: 'circle(0% at 50% 50%)', duration: 0.5, ease: 'power3.inOut' }, 2.1);
-  window.DURATION = 2.6;
+  const tenue = parseFloat(q.get('tenue') || '0');
+  tl.to('#open', { clipPath: 'circle(0% at 50% 50%)', duration: 0.5, ease: 'power3.inOut' }, 2.1 + tenue);
+  window.DURATION = 2.6 + tenue;
 } else {
   // éléments posés en 1,2 s, puis seul le halo respire : rien ne bouge sous les éléments YouTube
   tl.fromTo('#fLogo', { opacity: 0, y: -30 }, { opacity: 1, y: 0 }, 0);

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; pointer-events: none; }
+        /* « c'est aussi le nom de notre agence » : bandeau avec le logo, en bas à gauche */
+        #t-agence { position: absolute; left: 70px; top: 790px; width: 680px; height: 190px; background: #fff; border-radius: 24px; box-shadow: 0 24px 60px rgba(10, 6, 50, 0.4); overflow: hidden; }
+        /* le SVG du logo a des marges : cadre utile x 285 à 1636, y 241 à 838 sur 1920 x 1080 */
+        #t-logo { position: absolute; left: 34px; top: 35px; width: 271px; height: 120px; overflow: hidden; }
+        #t-logo img { position: absolute; left: -57px; top: -48px; width: 385px; height: 217px; }
+        #t-agence .titre { position: absolute; left: 340px; top: 0; bottom: 0; width: 320px; display: flex; align-items: center; font-size: 38px; }
+        /* « Un signal clair, que Google peut lire. C'est tout le secret. » : titre en bandeau bas */
+        #t-secret { position: absolute; left: 0; right: 0; top: 820px; height: 200px; background: linear-gradient(90deg, rgba(32, 26, 100, 0.94), rgba(49, 36, 159, 0.88)); display: flex; flex-direction: column; justify-content: center; padding: 0 90px; }
+        #t-secret .l1 { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 56px; color: #fff; letter-spacing: -0.02em; }
+        #t-secret .l2 { font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 40px; color: var(--orange); margin-top: 6px; }
+        #t-barre { position: absolute; left: 0; top: 0; bottom: 0; width: 14px; background: var(--orange); }
+      </style>
+      <div id="root" data-composition-id="temps-forts" data-width="1920" data-height="1080">
+        <div id="t-agence"><div id="t-logo"><img src="assets/logo-410gone-couleur.svg" alt="" /></div><span class="titre">C'est aussi notre nom.</span></div>
+        <div id="t-secret"><div id="t-barre"></div><div class="l1" id="t-l1">Un signal clair, que Google peut lire.</div><div class="l2" id="t-l2">C'est tout le secret.</div></div>
+      </div>
+      <script>
+        (function () {
+          // la sous-composition couvre toute la timeline : temps local = temps global ; voix ElevenLabs convertie par CARTE
+          const T = (v) => window.CARTE(v);
+          const tl = gsap.timeline({ paused: true });
+          gsap.set(["#t-agence", "#t-secret"], { opacity: 0 });
+          // agence : « Eh oui, c'est aussi le nom de notre agence »
+          tl.fromTo("#t-agence", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, T(45.5));
+          tl.to("#t-agence", { opacity: 0, x: -60, duration: 0.3, ease: "power2.in" }, T(47.1));
+          // secret
+          tl.fromTo("#t-secret", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, T(153.6));
+          tl.fromTo("#t-l1", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, T(153.7));
+          tl.fromTo("#t-l2", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4 }, T(156.2));
+          tl.to("#t-secret", { opacity: 0, y: 40, duration: 0.3, ease: "power2.in" }, T(157.2));
+          window.__timelines["temps-forts"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

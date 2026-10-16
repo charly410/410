@@ -1,6 +1,6 @@
 // Rendu de l'habillage 410 Gone (ouverture et écran de fin), même principe que build/render.mjs.
 // Usage :
-//   node habillage/render.mjs open "Titre de la vidéo" "Sous-titre" sortie.mp4
+//   node habillage/render.mjs open "Titre de la vidéo" "Sous-titre" sortie.mp4 [tenue en secondes]
 //   node habillage/render.mjs fin sortie.mp4
 //   node habillage/render.mjs stills open|fin t1,t2,... [guides]
 import { chromium } from 'playwright-core';
@@ -16,6 +16,7 @@ if (args[0] === 'stills') {
   if (args[3] === 'guides') params.set('guides', '');
 } else if (args[0] === 'open') {
   mode = 'open'; params.set('titre', args[1]); params.set('sous', args[2] || ''); out = args[3];
+  if (args[4]) params.set('tenue', args[4]);
 } else {
   mode = 'fin'; out = args[1];
 }
