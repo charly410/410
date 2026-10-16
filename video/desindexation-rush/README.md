@@ -13,7 +13,7 @@ mkdir -p rush && cp ../heygen/dereferencement-heygen.mp4 rush/rush-heygen.mp4
 npm install
 ```
 
-Pour passer au rush 1080p ré-exporté depuis HeyGen, remplacer `rush/rush-heygen.mp4` et `assets/rush-voix.m4a` (`ffmpeg -i rush/rush-heygen.mp4 -vn -c:a aac -b:a 192k assets/rush-voix.m4a`). Si le minutage est identique, rien d'autre ne change ; sinon refaire la transcription et `build/montage.py`.
+Pour passer au rush 1080p ré-exporté depuis HeyGen, remplacer `rush/rush-heygen.mp4` et `assets/rush-voix.m4a` (`ffmpeg -i rush/rush-heygen.mp4 -vn -af loudnorm=I=-15:TP=-1.5:LRA=11 -ar 48000 -c:a aac -b:a 192k assets/rush-voix.m4a` : la voix HeyGen sort à -20 LUFS, on la remonte vers -15 pour que la vidéo finale arrive près des -14 de YouTube). Si le minutage est identique, rien d'autre ne change ; sinon refaire la transcription et `build/montage.py`.
 
 ## Déroulé
 
