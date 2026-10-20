@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="UTF-8" /></head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; pointer-events: none; }
+        /* une preuve = une capture réelle de la documentation Google, plein écran, sans le rush */
+        .pv { position: absolute; inset: 0; opacity: 0; background: #fff; overflow: hidden; }
+        .pv-cam { position: absolute; inset: 0; }
+        .pv-cam img { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        /* cadre orange autour de la phrase citée (coordonnées : assets/preuves/preuves.json) */
+        .pv-cadre { position: absolute; border: 6px solid var(--orange); border-radius: 12px; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0); }
+        /* projecteur : repris du bloc yt-feather-highlight du catalogue HyperFrames */
+        .yt-hl { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: rgba(6, 8, 12, var(--yt-hl-dim)); -webkit-mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 52%, black 88%); mask-image: radial-gradient(ellipse var(--yt-hl-rx) var(--yt-hl-ry) at var(--yt-hl-x) var(--yt-hl-y), transparent 0%, transparent 52%, black 88%); }
+        .pv-source { position: absolute; left: 60px; bottom: 50px; padding: 14px 26px; border-radius: 999px; background: var(--indigo); color: #fff; font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 26px; white-space: nowrap; }
+        .pv-source span { color: var(--orange); }
+        .pv-tampon { position: absolute; right: 70px; top: 60px; padding: 12px 28px; border-radius: 999px; background: var(--orange); color: var(--profond); font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 30px; }
+      </style>
+      <div id="root" data-composition-id="preuves" data-width="1920" data-height="1080">
+        <div class="pv" id="pv-1">
+          <div class="pv-cam" id="pv-1-cam">
+            <img src="assets/preuves/noindex-robots.png" alt="" />
+            <div class="pv-cadre" id="pv-1-cadre"></div>
+          </div>
+          <div class="yt-hl" id="pv-1-hl" style="--yt-hl-dim: 0.55"></div>
+          <div class="pv-tampon" id="pv-1-tampon">Ce que dit Google</div>
+          <div class="pv-source" id="pv-1-source"><span>Source :</span> Google Search Central, « Bloquer l'indexation avec noindex »</div>
+        </div>
+        <div class="pv" id="pv-2">
+          <div class="pv-cam" id="pv-2-cam">
+            <img src="assets/preuves/suppressions-6-mois.png" alt="" />
+            <div class="pv-cadre" id="pv-2-cadre"></div>
+          </div>
+          <div class="yt-hl" id="pv-2-hl" style="--yt-hl-dim: 0.55"></div>
+          <div class="pv-tampon" id="pv-2-tampon">Ce que dit Google</div>
+          <div class="pv-source" id="pv-2-source"><span>Source :</span> Aide Search Console, « Outil de suppression »</div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          // sous-composition sur toute la timeline : temps local = temps global ; fenêtres dans window.PREUVES
+          const P = window.PREUVES;
+          const tl = gsap.timeline({ paused: true });
+          // helpers du bloc yt-feather-highlight (catalogue HyperFrames)
+          const hlIn = (target, at, o) => {
+            gsap.set(target, { "--yt-hl-x": o.x, "--yt-hl-y": o.y, "--yt-hl-rx": o.rx, "--yt-hl-ry": o.ry });
+            tl.to(target, { opacity: 1, duration: 0.5, ease: "power2.out" }, at);
+          };
+          const hlOut = (target, at) => tl.to(target, { opacity: 0, duration: 0.4, ease: "power2.in" }, at);
+
+          // phrase citée : cadre, projecteur et mouvement calculés depuis window.PREUVES_BOX (build/preuves.mjs).
+          // Le zoom lent (Ken Burns) amène la phrase au centre de l'image, au plus gros possible sans la couper.
+          const pct = (v, t) => (v / t) * 100 + "%";
+          [[1, "noindex-robots"], [2, "suppressions-6-mois"]].forEach(([n, cle]) => {
+            const B = window.PREUVES_BOX[cle];
+            const [a, b] = P[cle];
+            const g = "#pv-" + n;
+            const cx = B.x + B.w / 2, cy = B.y + B.h / 2;
+            const z = Math.min(1.35, 1840 / (B.w + 24), 980 / (B.h + 24));
+            const X = 960 - cx * z, Y = 540 - cy * z;
+            gsap.set(g + "-cadre", { left: B.x - 12, top: B.y - 12, width: B.w + 24, height: B.h + 24 });
+            gsap.set(g + "-cam", { transformOrigin: "0 0" });
+            tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, a);
+            tl.fromTo(g + "-cam", { scale: 1, x: 0, y: 0 }, { scale: z, x: X, y: Y, duration: b - a, ease: "sine.inOut" }, a);
+            // le masque du projecteur est entièrement transparent jusqu'à ~55 % de son rayon : on dimensionne en conséquence
+            const r0 = { x: pct(cx, 1920), y: pct(cy, 1080), rx: pct(B.w / 2 / 0.55, 1920), ry: pct(B.h / 2 / 0.55, 1080) };
+            const r1 = { x: "50%", y: "50%", rx: pct((B.w * z) / 2 / 0.55, 1920), ry: pct((B.h * z) / 2 / 0.55, 1080) };
+            hlIn(g + "-hl", a + 0.6, r0);
+            tl.to(g + "-hl", { "--yt-hl-x": r1.x, "--yt-hl-y": r1.y, "--yt-hl-rx": r1.rx, "--yt-hl-ry": r1.ry, duration: b - a - 0.6, ease: "sine.inOut" }, a + 0.6);
+            tl.fromTo(g + "-cadre", { opacity: 0, scale: 1.06, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, a + 0.9);
+            tl.fromTo(g + "-tampon", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, a + 0.3);
+            tl.fromTo(g + "-source", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, a + 0.5);
+            hlOut(g + "-hl", b - 0.5);
+            tl.to(g, { opacity: 0, duration: 0.3, ease: "power2.in" }, b - 0.3);
+          });
+          window.__timelines["preuves"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

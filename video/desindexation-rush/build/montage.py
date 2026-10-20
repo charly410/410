@@ -6,7 +6,8 @@ correspondance v vers temps du rush, puis temps du rush vers temps de la timelin
 
 Usage (depuis video/desindexation-rush) :
   python3 build/montage.py chemin/transcript-elevenlabs.json
-Écrit assets/carte-temps.js (window.CARTE et window.DEBUT) et build/cues-musique.json, puis affiche les repères.
+Écrit assets/carte-temps.js (window.CARTE, window.DEBUT, window.PHRASES, window.PREUVES) et build/cues-musique.json,
+puis affiche les repères.
 """
 import difflib, json, re, sys, unicodedata
 from pathlib import Path
@@ -45,6 +46,26 @@ def mots(path):
             n = norm(w["w"])
             if n:
                 out.append((n, w["s"]))
+    return out
+
+
+# Preuves plein écran (captures de la documentation Google), en temps de la voix ElevenLabs :
+# début et fin de la phrase qu'elles illustrent.
+PREUVES_V = {
+    "noindex-robots": (92.45, 98.85),       # « Résultat : Google ne lit plus votre noindex… reste dans les résultats »
+    "suppressions-6-mois": (112.8, 116.5),  # « Mais il ne fait que masquer, pour environ six mois »
+}
+
+
+def debuts_de_phrase():
+    """Début de chaque phrase du rush (mot qui suit un . ? !), en temps de la timeline."""
+    d = json.load(open(ROOT / "transcript.json"))
+    mots_r = [w for s in d for w in s["words"]]
+    out, nouvelle = [], True
+    for w in mots_r:
+        if nouvelle and w["s"] < FIN_RUSH:
+            out.append(round(rush_vers_global(w["s"]), 2))
+        nouvelle = w["w"].strip().endswith((".", "?", "!"))
     return out
 
 
@@ -87,6 +108,8 @@ def main():
           "// CARTE(v) : temps de la voix ElevenLabs (scènes d'origine) vers temps de la timeline du rush.\n"
           f"window.ANCRES = {json.dumps(propres, separators=(',', ':'))};\n"
           f"window.DEBUT = {json.dumps(debut)};\n"
+          f"window.PHRASES = {json.dumps(debuts_de_phrase())};\n"
+          f"window.PREUVES = {json.dumps({k: [round(carte(a), 2), round(carte(b), 2)] for k, (a, b) in PREUVES_V.items()})};\n"
           "window.CARTE = function (v) {\n"
           "  const A = window.ANCRES;\n"
           "  if (v <= A[0][0]) return A[0][1] + (v - A[0][0]);\n"

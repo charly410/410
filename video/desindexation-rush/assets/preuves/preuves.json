@@ -1,0 +1,18 @@
+{
+  "noindex-robots": {
+    "url": "https://developers.google.com/search/docs/crawling-indexing/block-indexing?hl=fr",
+    "texte": "ne doit pas",
+    "x": 469,
+    "y": 438,
+    "w": 1413,
+    "h": 205
+  },
+  "suppressions-6-mois": {
+    "url": "https://support.google.com/webmasters/answer/9689846?hl=fr",
+    "texte": "six mois",
+    "x": 130,
+    "y": 482,
+    "w": 1120,
+    "h": 115
+  }
+}

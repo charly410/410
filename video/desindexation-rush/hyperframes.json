@@ -9,5 +9,22 @@
   "media": {
     "autoProxy": true
   },
-  "authoringSkill": "general-video"
+  "authoringSkill": "general-video",
+  "registryItems": [
+    {
+      "name": "grain-overlay",
+      "type": "hyperframes:component",
+      "target": "compositions/components/grain-overlay.html"
+    },
+    {
+      "name": "yt-camera-move",
+      "type": "hyperframes:component",
+      "target": "compositions/components/yt-camera-move.html"
+    },
+    {
+      "name": "yt-feather-highlight",
+      "type": "hyperframes:component",
+      "target": "compositions/components/yt-feather-highlight.html"
+    }
+  ]
 }
