@@ -57,4 +57,9 @@ Pour changer le rythme : modifier les motifs (`motif === 0 / 1 / 2`) ou la force
 
 ### Rendu
 
-`rendu/desindexation-rush-410-v2.mp4`. La v1 reste dans `rendu/` pour comparer.
+`rendu/desindexation-rush-410-v2.mp4` (1920 x 1080, 2 min 48 s, -16 LUFS). La v1 reste dans `rendu/` pour comparer.
+
+- Le rendu HyperFrames brut pèse 150 Mo : le grain se compresse mal, et GitHub refuse les fichiers de plus de 100 Mo. La version commitée est réencodée en deux passes à 4,3 Mbit/s (95 Mo) :
+  `ffmpeg -i brut.mp4 -c:v libx264 -preset slow -b:v 4300k -pass 1 -an -f mp4 /dev/null`, puis la même commande en `-pass 2` avec `-c:a aac -b:a 192k -movflags +faststart`.
+- Pour la mise en ligne YouTube, le rendu brut est préférable : le relancer (`README.md`) et l'envoyer tel quel, sans le commiter.
+- Le rendu prend environ une heure dans ce conteneur (étalonnage calculé sans carte graphique), contre une dizaine de minutes pour la v1.
