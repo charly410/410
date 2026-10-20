@@ -4,3 +4,5 @@ rendu/render.log
 build/__pycache__/
 build/cues-musique.json
 rush/
+rendu/work-*/
+rendu/.*.hf-transaction-*/
